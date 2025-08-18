@@ -1,0 +1,80 @@
+========================================================
+             ISSUE & DEPLOYMENT TRACKER
+         (Mini GitHub / Jira - Resume Project)
+========================================================
+
+TECH STACK
+-----------
+Backend (Core):
+  - Java (Servlets, JSP, JSTL)
+  - Hibernate (JPA Annotations, ORM)
+  - DAO Layer (separate from business logic)
+  - POJOs for entities
+
+Frontend (View Layer):
+  - JSP + JSTL for dynamic content
+  - HTML5, CSS3, Bootstrap (for clean UI)
+  - (Optional) AJAX with jQuery for smoother UX
+
+Database:
+  - MySQL (free, reliable)
+
+Build & Project Structure:
+  - Maven (dependency management, structured build)
+
+Deployment:
+  - Apache Tomcat (local + Oracle Cloud Free VM)
+
+Security:
+  - Servlet Filters (authentication & authorization)
+  - Password hashing (BCrypt / Argon2)
+
+Testing:
+  - JUnit (unit testing)
+  - Mockito (optional, for DAO/service testing)
+
+Version Control / CI-CD:
+  - GitHub/GitLab repo
+  - GitHub Actions or GitLab CI (free build/test)
+
+--------------------------------------------------------
+
+PROJECT MODULES (FEATURES)
+---------------------------
+1. USER MANAGEMENT
+   - Signup/Login with roles (Admin, Developer, Tester, Project Manager)
+   - Profile management
+
+2. ISSUE TRACKING
+   - Create Issue (bug/feature/task)
+   - Assign to user, set priority, set status (Open, In Progress, Resolved, Closed)
+   - Comment system for discussions
+   - (Optional) Attachments
+
+3. PROJECT MANAGEMENT
+   - Create projects
+   - Add members with roles
+   - Dashboard with project stats
+
+4. DEPLOYMENT TRACKER
+   - Track versions/releases
+   - Deployment logs (e.g., Release 1.0 → deployed on date X)
+   - Link issues to releases
+
+5. SEARCH & FILTERS
+   - Search by issue title/ID
+   - Filter by status, priority, user
+
+6. ADMIN PANEL
+   - Manage users, projects, roles
+   - System-wide reports
+
+--------------------------------------------------------
+HIGHLIGHTS
+-----------
+✔ Java EE (Servlets, JSP, JSTL, Filters)
+✔ Hibernate ORM + MySQL
+✔ Secure authentication & authorization
+✔ Testing + CI/CD pipeline
+✔ Cloud deployment on Oracle Free VM
+--------------------------------------------------------
