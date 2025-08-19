@@ -25,6 +25,7 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id; // Primary Key
+//	private int id; // less space and better since its a smaller system
 
 	@Column(nullable = false, unique = true, length = 50)
 	private String username;
