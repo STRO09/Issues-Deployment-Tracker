@@ -18,6 +18,8 @@ public interface IssueDAO {
 
 	public List<Issue> findByPriority(String priority);
 	
+	public List<Issue> viewIssuesPerVersion(Long deployId);
+	
 	public void updateIssue(Issue issue);
 	
 	public void deleteIssue(Long issueid);

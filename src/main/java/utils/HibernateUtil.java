@@ -56,16 +56,13 @@ public class HibernateUtil {
         }
 	}
 
-	public static SessionFactory getFactory() {
-		return factory;
-	}
 	
 	public static Session getSession() {
 		return factory.openSession();
 	}
 	
 	public static void shutdown() {
-		getFactory().close();
+		factory.close();
 	}
 
 	
