@@ -3,7 +3,7 @@
   <groupId>com.issuedeploytracker</groupId>
   <artifactId>IssuesandDeploymentTracker</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
   <name>Issues &amp; Deployment Tracker</name>
   
   
@@ -14,6 +14,14 @@
     <artifactId>hibernate-core</artifactId>
     <version>5.4.33.Final</version>
 </dependency>
+
+
+    <!-- MySQL Connector/J -->
+    <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>8.0.33</version>
+    </dependency>
 
 
 <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api

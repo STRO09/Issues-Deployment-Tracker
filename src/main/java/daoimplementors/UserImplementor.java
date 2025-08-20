@@ -17,23 +17,30 @@ public class UserImplementor implements UserDAO {
 	public void registerUser(User user) {
 		// TODO Auto-generated method stub
 		Transaction transaction = null;
-		try (Session session = HibernateUtil.getSession()) {
+		Session session = null;
+		try {
+			session = HibernateUtil.getSession();
 			transaction = session.beginTransaction();
-			if (!findByEmail(user.getEmail()).isPresent()) {
+			User existingUser = session.createQuery("FROM User u WHERE u.email = :email", User.class)
+					.setParameter("email", user.getEmail()).uniqueResult();
+
+			if (existingUser == null) {
 				session.persist(user);
 				transaction.commit();
 				System.out.println("User registered successfully");
 			} else {
-				transaction.rollback();
 				System.out.println("User with the same email already exists");
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
-			if (transaction != null)
+			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
+			}
 			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
 		}
-
 	}
 
 	@Override
@@ -41,17 +48,23 @@ public class UserImplementor implements UserDAO {
 		// TODO Auto-generated method stub
 		Transaction transaction = null;
 		User user = null;
-		try (Session session = HibernateUtil.getSession()) {
+		Session session = null;
+		try {
+			session = HibernateUtil.getSession();
 			transaction = session.beginTransaction();
 			user = session.createQuery("FROM User u where u.email= :email", User.class).setParameter("email", email)
 					.uniqueResult();
 			transaction.commit();
 			System.out.println("User found");
 		} catch (Exception e) {
-			// TODO: handle exception
-			if (transaction != null)
+			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
+			}
 			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
 		}
 
 		return Optional.ofNullable(user);
@@ -62,17 +75,23 @@ public class UserImplementor implements UserDAO {
 		// TODO Auto-generated method stub
 		Transaction transaction = null;
 		User user = null;
-		try (Session session = HibernateUtil.getSession()) {
+		Session session = null;
+		try {
+			session = HibernateUtil.getSession();
 			transaction = session.beginTransaction();
 			user = session.createQuery("FROM User u where u.username= :username", User.class)
 					.setParameter("username", username).uniqueResult();
 			transaction.commit();
 			System.out.println("USer found");
 		} catch (Exception e) {
-			// TODO: handle exception
-			if (transaction != null)
+			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
+			}
 			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
 		}
 
 		return Optional.ofNullable(user);
@@ -83,15 +102,21 @@ public class UserImplementor implements UserDAO {
 		// TODO Auto-generated method stub
 		Transaction transaction = null;
 		List<User> users = null;
-		try (Session session = HibernateUtil.getSession()) {
+		Session session = null;
+		try {
+			session = HibernateUtil.getSession();
 			transaction = session.beginTransaction();
 			users = session.createQuery("FROM User", User.class).getResultList();
 			transaction.commit();
 		} catch (Exception e) {
-			// TODO: handle exception
-			if (transaction != null)
+			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
+			}
 			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
 		}
 
 		return users;
@@ -102,18 +127,23 @@ public class UserImplementor implements UserDAO {
 		// TODO Auto-generated method stub
 		Transaction transaction = null;
 		List<User> users = null;
-		try (Session session = HibernateUtil.getSession()) {
+		Session session = null;
+		try {
+			session = HibernateUtil.getSession();
 			transaction = session.beginTransaction();
 			users = session.createQuery("FROM User u where u.role= :role", User.class).setParameter("role", role)
 					.getResultList();
 			transaction.commit();
 		} catch (Exception e) {
-			// TODO: handle exception
-			if (transaction != null)
+			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
+			}
 			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
 		}
-
 		return users;
 	}
 
@@ -122,7 +152,7 @@ public class UserImplementor implements UserDAO {
 		// TODO Auto-generated method stub
 		Session session = HibernateUtil.getSession();
 		Transaction transaction = session.beginTransaction();
-		if (findByEmail(user.getEmail()).isPresent()) {
+		if (getUserById(user.getId()) != null) {
 			session.merge(user);
 			transaction.commit();
 			System.out.println("User data updated successfully");
@@ -152,6 +182,30 @@ public class UserImplementor implements UserDAO {
 
 		session.close();
 
+	}
+
+	@Override
+	public User getUserById(Long id) {
+		// TODO Auto-generated method stub
+		Transaction transaction = null;
+		User user = null;
+		Session session = null;
+		try {
+			session = HibernateUtil.getSession();
+			transaction = session.beginTransaction();
+			user = session.get(User.class, id);
+			transaction.commit();
+		} catch (Exception e) {
+			if (transaction != null && transaction.isActive()) {
+				transaction.rollback();
+			}
+			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+		return user;
 	}
 
 }

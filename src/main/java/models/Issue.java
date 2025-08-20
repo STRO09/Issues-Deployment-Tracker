@@ -81,6 +81,14 @@ public class Issue {
 	public Issue() {
 	}
 
+	public Issue(String description, Priority priority, Status status, Project project, User user) {
+		this.description = description;
+		this.priority = priority;
+		this.status = status;
+		this.project = project;
+		this.createdBy = user;
+	}
+
 	@PrePersist
 	protected void onCreate() {
 		createdAt = LocalDateTime.now();
