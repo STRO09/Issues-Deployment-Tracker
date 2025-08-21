@@ -3,6 +3,8 @@ package daointerfaces;
 import java.util.List;
 
 import models.Issue;
+import models.Issue.Priority;
+import models.Issue.Status;
 
 public interface IssueDAO {
 
@@ -14,9 +16,9 @@ public interface IssueDAO {
 	
 	public List<Issue> findIssueByAssignedUser(Long userId);
 	
-	public List<Issue> findByStatus(String status);
+	public List<Issue> findByStatus(Status status);
 
-	public List<Issue> findByPriority(String priority);
+	public List<Issue> findByPriority(Priority priority);
 	
 	public List<Issue> viewIssuesPerVersion(Long deployId);
 	

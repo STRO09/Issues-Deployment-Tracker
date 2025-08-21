@@ -16,15 +16,21 @@ public class DeploymentImplementor implements DeploymentDAO {
 	public void deployProject(Deployment deployment) {
 		// TODO Auto-generated method stub
 		Transaction transaction = null;
-		try (Session session = HibernateUtil.getSession()) {
+		Session session = null;
+		try {
+			session = HibernateUtil.getSession();
 			transaction = session.beginTransaction();
 			session.persist(deployment);
 			transaction.commit();
 		} catch (Exception e) {
-			// TODO: handle exception
-			if (transaction != null)
+			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
+			}
 			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
 		}
 
 	}
@@ -34,15 +40,21 @@ public class DeploymentImplementor implements DeploymentDAO {
 		// TODO Auto-generated method stub
 		Deployment deployment = null;
 		Transaction transaction = null;
-		try (Session session = HibernateUtil.getSession()) {
+		Session session = null;
+		try {
+			session = HibernateUtil.getSession();
 			transaction = session.beginTransaction();
 			deployment = session.get(Deployment.class, deployid);
 			transaction.commit();
 		} catch (Exception e) {
-			// TODO: handle exception
-			if (transaction != null)
+			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
+			}
 			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
 		}
 
 		return deployment;
@@ -54,17 +66,23 @@ public class DeploymentImplementor implements DeploymentDAO {
 		// TODO Auto-generated method stub
 		List<Deployment> deployments = null;
 		Transaction transaction = null;
-		try (Session session = HibernateUtil.getSession()) {
+		Session session = null;
+		try {
+			session = HibernateUtil.getSession();
 			transaction = session.beginTransaction();
 			deployments = session.createQuery("FROM Deployment d where project.id = :projectid")
 					.setParameter("projectid", projectid).getResultList();
 
 			transaction.commit();
 		} catch (Exception e) {
-			// TODO: handle exception
-			if (transaction != null)
+			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
+			}
 			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
 		}
 
 		return deployments;
@@ -74,17 +92,22 @@ public class DeploymentImplementor implements DeploymentDAO {
 	public void updateDeployment(Deployment deployment) {
 		// TODO Auto-generated method stub
 		Transaction transaction = null;
-		try (Session session = HibernateUtil.getSession()) {
+		Session session = null;
+		try {
+			session = HibernateUtil.getSession();
 			transaction = session.beginTransaction();
 			session.merge(deployment);
 			transaction.commit();
 		} catch (Exception e) {
-			// TODO: handle exception
-			if (transaction != null)
+			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
+			}
 			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
 		}
-
 
 	}
 
@@ -93,7 +116,9 @@ public class DeploymentImplementor implements DeploymentDAO {
 		// TODO Auto-generated method stub
 		Transaction transaction = null;
 
-		try (Session session = HibernateUtil.getSession()) {
+		Session session = null;
+		try {
+			session = HibernateUtil.getSession();
 			transaction = session.beginTransaction();
 			// Load deployment and issue
 			Deployment deployment = session.get(Deployment.class, deployId);
@@ -111,9 +136,14 @@ public class DeploymentImplementor implements DeploymentDAO {
 
 			transaction.commit();
 		} catch (Exception e) {
-			if (transaction != null)
+			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
+			}
 			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
 		}
 
 	}
@@ -123,24 +153,28 @@ public class DeploymentImplementor implements DeploymentDAO {
 		// TODO Auto-generated method stub
 		Transaction transaction = null;
 		Deployment deployment = null;
-		try (Session session = HibernateUtil.getSession()) {
+		Session session = null;
+		try {
+			session = HibernateUtil.getSession();
 			transaction = session.beginTransaction();
 			deployment = session.get(Deployment.class, deployid);
 			if (deployment != null) {
-			    session.delete(deployment);
+				session.delete(deployment);
 				transaction.commit();
-			}
-			else {
+			} else {
 				transaction.rollback();
 				System.out.println("Deployment with the given id not found");
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
-			if (transaction != null)
+			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
+			}
 			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
 		}
-
 
 	}
 

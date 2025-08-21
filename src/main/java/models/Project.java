@@ -53,7 +53,13 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectMember> members;
 
-    // Constructors ---------------------------
+    @Override
+	public String toString() {
+		return "Project [id=" + id + ", name=" + name + ", description=" + description + ", createdAt=" + createdAt
+				+ ", updatedAt=" + updatedAt  + "]";
+	}
+
+	// Constructors ---------------------------
     public Project() {}
 
     public Project(String name, String description) {

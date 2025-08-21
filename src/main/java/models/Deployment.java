@@ -54,6 +54,12 @@ public class Deployment {
 
 	// ---------------- CONSTRUCTORS ----------------
 
+	@Override
+	public String toString() {
+		return "Deployment [id=" + id + ", version=" + version + ", description=" + description + ", deployedAt="
+				+ deployedAt + ", project=" + project.getId() + "]";
+	}
+
 	public Deployment() {
 	}
 

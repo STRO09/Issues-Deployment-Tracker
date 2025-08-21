@@ -16,10 +16,11 @@ public class CommentImplementor implements CommentDAO {
 
 	@Override
 	public void addComment(Comment comment) {
-		Transaction transaction = null;
-
 		// TODO Auto-generated method stub
-		try (Session session = HibernateUtil.getSession()) {
+		Transaction transaction = null;
+		Session session = null;
+		try {
+			session = HibernateUtil.getSession();
 			transaction = session.beginTransaction();
 			if (comment != null) {
 				session.persist(comment);
@@ -29,11 +30,14 @@ public class CommentImplementor implements CommentDAO {
 				System.out.println("Comment is empty");
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
-			if (transaction != null)
+			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
+			}
 			e.printStackTrace();
-
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
 		}
 
 	}
@@ -44,9 +48,9 @@ public class CommentImplementor implements CommentDAO {
 		// TODO Auto-generated method stub
 		Transaction transaction = null;
 		List<Comment> comments = null;
-
-		// TODO Auto-generated method stub
-		try (Session session = HibernateUtil.getSession()) {
+		Session session = null;
+		try {
+			session = HibernateUtil.getSession();
 			transaction = session.beginTransaction();
 			if (session.get(Issue.class, issueid) != null) {
 
@@ -59,11 +63,14 @@ public class CommentImplementor implements CommentDAO {
 			}
 
 		} catch (Exception e) {
-			// TODO: handle exception
-			if (transaction != null)
+			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
+			}
 			e.printStackTrace();
-
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
 		}
 
 		return comments;
@@ -73,11 +80,13 @@ public class CommentImplementor implements CommentDAO {
 	@Override
 	public List<Comment> findCommentByUserId(Long userid) {
 		// TODO Auto-generated method stub
-		Transaction transaction = null;
+
 		List<Comment> comments = null;
 
-		// TODO Auto-generated method stub
-		try (Session session = HibernateUtil.getSession()) {
+		Transaction transaction = null;
+		Session session = null;
+		try {
+			session = HibernateUtil.getSession();
 			transaction = session.beginTransaction();
 			if (session.get(User.class, userid) != null) {
 
@@ -90,11 +99,14 @@ public class CommentImplementor implements CommentDAO {
 			}
 
 		} catch (Exception e) {
-			// TODO: handle exception
-			if (transaction != null)
+			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
+			}
 			e.printStackTrace();
-
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
 		}
 
 		return comments;
@@ -104,11 +116,12 @@ public class CommentImplementor implements CommentDAO {
 	@Override
 	public List<Comment> findCommentByProjectId(Long projectid) {
 		// TODO Auto-generated method stub
-		Transaction transaction = null;
 		List<Comment> comments = null;
 
-		// TODO Auto-generated method stub
-		try (Session session = HibernateUtil.getSession()) {
+		Transaction transaction = null;
+		Session session = null;
+		try {
+			session = HibernateUtil.getSession();
 			transaction = session.beginTransaction();
 			if (session.get(Project.class, projectid) != null) {
 
@@ -122,11 +135,14 @@ public class CommentImplementor implements CommentDAO {
 			}
 
 		} catch (Exception e) {
-			// TODO: handle exception
-			if (transaction != null)
+			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
+			}
 			e.printStackTrace();
-
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
 		}
 
 		return comments;
@@ -137,7 +153,9 @@ public class CommentImplementor implements CommentDAO {
 		// TODO Auto-generated method stub
 		Transaction transaction = null;
 		Comment comment = null;
-		try (Session session = HibernateUtil.getSession()) {
+		Session session = null;
+		try {
+			session = HibernateUtil.getSession();
 			transaction = session.beginTransaction();
 			comment = session.get(Comment.class, id);
 			if (comment != null) {
@@ -149,13 +167,15 @@ public class CommentImplementor implements CommentDAO {
 				System.out.println("No such comment by the given id");
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
-			if (transaction != null)
+			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
+			}
 			e.printStackTrace();
-
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
 		}
 
 	}
-
 }

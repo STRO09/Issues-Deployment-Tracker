@@ -68,6 +68,15 @@ public class Issue {
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 
+	@Override
+	public String toString() {
+		return "Issue [id=" + id + ", title=" + title + ", description=" + description + ", priority=" + priority
+				+ ", status=" + status + ", projectId=" + (project != null ? project.getId() : null) + ", createdById="
+				+ (createdBy != null ? createdBy.getId() : null) + ", assignedToId="
+				+ (assignedTo != null ? assignedTo.getId() : null) + ", createdAt=" + createdAt + ", updatedAt="
+				+ updatedAt + "]";
+	}
+
 	// --- Enums ---
 	public enum Priority {
 		LOW, MEDIUM, HIGH, CRITICAL
@@ -81,7 +90,8 @@ public class Issue {
 	public Issue() {
 	}
 
-	public Issue(String description, Priority priority, Status status, Project project, User user) {
+	public Issue(String title, String description, Priority priority, Status status, Project project, User user) {
+		this.title = title;
 		this.description = description;
 		this.priority = priority;
 		this.status = status;
@@ -92,6 +102,7 @@ public class Issue {
 	@PrePersist
 	protected void onCreate() {
 		createdAt = LocalDateTime.now();
+		updatedAt = LocalDateTime.now();
 	}
 
 	@PreUpdate

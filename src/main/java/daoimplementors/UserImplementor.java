@@ -21,8 +21,8 @@ public class UserImplementor implements UserDAO {
 		try {
 			session = HibernateUtil.getSession();
 			transaction = session.beginTransaction();
-			User existingUser = session.createQuery("FROM User u WHERE u.email = :email", User.class)
-					.setParameter("email", user.getEmail()).uniqueResult();
+			User existingUser = session.createQuery("FROM User u WHERE u.id = :id", User.class)
+					.setParameter("id", user.getId()).uniqueResult();
 
 			if (existingUser == null) {
 				session.persist(user);
@@ -150,38 +150,63 @@ public class UserImplementor implements UserDAO {
 	@Override
 	public void updateProfile(User user) {
 		// TODO Auto-generated method stub
-		Session session = HibernateUtil.getSession();
-		Transaction transaction = session.beginTransaction();
-		if (getUserById(user.getId()) != null) {
-			session.merge(user);
-			transaction.commit();
-			System.out.println("User data updated successfully");
-		} else {
-			transaction.rollback();
-			System.out.println("No user with the provided email exists");
-		}
+		Session session = null;
+		Transaction transaction = null;
+		try {
+			session = HibernateUtil.getSession();
+			transaction = session.beginTransaction();
+			User existingUser = session.createQuery("FROM User u WHERE u.id = :id", User.class)
+					.setParameter("id", user.getId()).uniqueResult();
 
-		session.close();
+			if (existingUser != null) {
+				session.merge(user);
+				transaction.commit();
+				System.out.println("User data updated successfully");
+			} else {
+				System.out.println("No user with the provided id exists");
+			}
+
+		} catch (Exception e) {
+			if (transaction != null && transaction.isActive()) {
+				transaction.rollback();
+			}
+			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
 
 	}
 
 	@Override
 	public void deleteUser(Long id) {
 		// TODO Auto-generated method stub
-		Session session = HibernateUtil.getSession();
-		Transaction transaction = session.beginTransaction();
-		User user = session.get(User.class, id);
-		if (user != null) {
-			session.delete(user);
-			transaction.commit();
-			System.out.println("User deleted successfully");
-		} else {
-			transaction.rollback();
-			System.out.println("No user with the provided id exists");
+		Session session = null;
+		Transaction transaction = null;
+		try {
+			session = HibernateUtil.getSession();
+			transaction = session.beginTransaction();
+			User user = session.get(User.class, id);
+			if (user != null) {
+				session.delete(user);
+				transaction.commit();
+				System.out.println("User deleted successfully");
+			} else {
+				transaction.rollback();
+				System.out.println("No user with the provided id exists");
+			}
+
+		} catch (Exception e) {
+			if (transaction != null && transaction.isActive()) {
+				transaction.rollback();
+			}
+			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
 		}
-
-		session.close();
-
 	}
 
 	@Override

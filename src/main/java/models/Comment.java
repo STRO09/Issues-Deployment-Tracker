@@ -49,6 +49,12 @@ public class Comment {
 		this.author = author;
 	}
 
+	@Override
+	public String toString() {
+		return "Comment [id=" + id + ", content=" + content + ", createdAt=" + createdAt + ", issue=" + issue.getId()
+				+ ", author=" + author.getId() + "]";
+	}
+
 	// Lifecycle -----------------
 	@PrePersist
 	protected void onCreate() {

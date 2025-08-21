@@ -14,28 +14,44 @@ public class ProjectImplementor implements ProjectDAO {
     @Override
     public void createProject(Project project) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSession()) {
+        Session session = null;
+		try {
+			session = HibernateUtil.getSession();
             transaction = session.beginTransaction();
             session.persist(project);
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
-            e.printStackTrace();
-        }
+			if (transaction != null && transaction.isActive()) {
+				transaction.rollback();
+			}
+			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
     }
 
     @Override
     public Project getProjectById(Long id) {
         Transaction transaction = null;
         Project project = null;
-        try (Session session = HibernateUtil.getSession()) {
+        Session session = null;
+		try {
+			session = HibernateUtil.getSession();
             transaction = session.beginTransaction();
             project = session.get(Project.class, id);
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
-            e.printStackTrace();
-        }
+			if (transaction != null && transaction.isActive()) {
+				transaction.rollback();
+			}
+			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
         return project;
     }
 
@@ -44,14 +60,22 @@ public class ProjectImplementor implements ProjectDAO {
     public List<Project> getAllProjects() {
         Transaction transaction = null;
         List<Project> projects = null;
-        try (Session session = HibernateUtil.getSession()) {
+        Session session = null;
+		try {
+			session = HibernateUtil.getSession();
             transaction = session.beginTransaction();
             projects = session.createQuery("FROM Project").getResultList();
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
-            e.printStackTrace();
-        }
+			if (transaction != null && transaction.isActive()) {
+				transaction.rollback();
+			}
+			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
         return projects;
     }
 
@@ -60,7 +84,9 @@ public class ProjectImplementor implements ProjectDAO {
     public List<Project> getProjectsByUserId(Long userid) {
         Transaction transaction = null;
         List<Project> projects = null;
-        try (Session session = HibernateUtil.getSession()) {
+        Session session = null;
+		try {
+			session = HibernateUtil.getSession();
             transaction = session.beginTransaction();
             projects = session.createQuery(
                 "SELECT pm.project FROM ProjectMember pm WHERE pm.user.id = :userid"
@@ -68,30 +94,46 @@ public class ProjectImplementor implements ProjectDAO {
             .setParameter("userid", userid)
             .getResultList();
             transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
-            e.printStackTrace();
-        }
+        }catch (Exception e) {
+			if (transaction != null && transaction.isActive()) {
+				transaction.rollback();
+			}
+			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
         return projects;
     }
 
     @Override
     public void updateProject(Project project) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSession()) {
+        Session session = null;
+		try {
+			session = HibernateUtil.getSession();
             transaction = session.beginTransaction();
             session.merge(project);
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
-            e.printStackTrace();
-        }
+			if (transaction != null && transaction.isActive()) {
+				transaction.rollback();
+			}
+			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
     }
 
     @Override
     public void deleteProject(Long id) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSession()) {
+        Session session = null;
+		try {
+			session = HibernateUtil.getSession();
             transaction = session.beginTransaction();
             Project project = session.get(Project.class, id);
             if (project != null) {
@@ -99,8 +141,14 @@ public class ProjectImplementor implements ProjectDAO {
             }
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
-            e.printStackTrace();
-        }
+			if (transaction != null && transaction.isActive()) {
+				transaction.rollback();
+			}
+			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
     }
 }

@@ -72,6 +72,13 @@ public class User {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProjectMember> projectMemberships;
 
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", email=" + email + ", password=" + password
+				+ ", fullName=" + fullName + ", role=" + role + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt
+				 + "]";
+	}
+
 	// ===== Constructors =====
 	public User() {
 	}
