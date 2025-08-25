@@ -10,11 +10,11 @@ import models.User;
 public interface ProjectMemberDAO {
 
 	
-	  public void addMember(ProjectMember projectMember);
+	  public boolean addMember(ProjectMember projectMember);
 
-	    public void removeMember(Long projectmemberid);
+	    public boolean removeMember(Long projectmemberid);
 
 	    public List<ProjectMember> findMembersByProject(Long projectId);
 
-	    public void updateProjectRole(ProjectMember projectMember);
+	    public boolean updateProjectRole(ProjectMember projectMember);
 }

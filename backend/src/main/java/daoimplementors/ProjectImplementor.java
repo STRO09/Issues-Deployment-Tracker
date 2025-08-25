@@ -12,15 +12,18 @@ import utils.HibernateUtil;
 public class ProjectImplementor implements ProjectDAO {
 
     @Override
-    public void createProject(Project project) {
+    public boolean createProject(Project project) {
         Transaction transaction = null;
+    	boolean success ;
         Session session = null;
 		try {
 			session = HibernateUtil.getSession();
             transaction = session.beginTransaction();
             session.persist(project);
             transaction.commit();
+            success = true;
         } catch (Exception e) {
+        	success = false;
 			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
 			}
@@ -30,6 +33,7 @@ public class ProjectImplementor implements ProjectDAO {
 				session.close();
 			}
 		}
+		return success;
     }
 
     @Override
@@ -108,7 +112,8 @@ public class ProjectImplementor implements ProjectDAO {
     }
 
     @Override
-    public void updateProject(Project project) {
+    public boolean updateProject(Project project) {
+    	boolean success ;
         Transaction transaction = null;
         Session session = null;
 		try {
@@ -116,7 +121,9 @@ public class ProjectImplementor implements ProjectDAO {
             transaction = session.beginTransaction();
             session.merge(project);
             transaction.commit();
+            success = true;
         } catch (Exception e) {
+        	success = false;
 			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
 			}
@@ -126,10 +133,12 @@ public class ProjectImplementor implements ProjectDAO {
 				session.close();
 			}
 		}
+		return success;
     }
 
     @Override
-    public void deleteProject(Long id) {
+    public boolean  deleteProject(Long id) {
+    	boolean success ;
         Transaction transaction = null;
         Session session = null;
 		try {
@@ -140,7 +149,9 @@ public class ProjectImplementor implements ProjectDAO {
                 session.delete(project);
             }
             transaction.commit();
+            success = true;
         } catch (Exception e) {
+        	success = false;
 			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
 			}
@@ -150,5 +161,6 @@ public class ProjectImplementor implements ProjectDAO {
 				session.close();
 			}
 		}
+		return success;
     }
 }

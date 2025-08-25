@@ -78,14 +78,15 @@ public class Main {
 			List<Issue> fetchedIssues2 = issueDAO.findByStatus(Issue.Status.OPEN);
 			System.out.println("🔎 Fetched Issue3: ");
 			fetchedIssues2.forEach(System.out::println);
-			
-			List<Issue> fetchedIssues3 = issueDAO.findIssueByAssignedUser();
-			System.out.println("🔎 Fetched Issue4: ");
-			fetchedIssues.forEach(System.out::println);
-			
-			List<Issue> fetchedIssue4 = issueDAO.findIssueById(1L);
-			System.out.println("🔎 Fetched Issue5: ");
-			fetchedIssues.forEach(System.out::println);
+//			System.out.println(issueDAO.assignIssue(2L, 1L));
+//			
+//			List<Issue> fetchedIssues3 = issueDAO.findIssueByAssignedUser();
+//			System.out.println("🔎 Fetched Issue4: ");
+//			fetchedIssues.forEach(System.out::println);
+//			
+//			List<Issue> fetchedIssue4 = issueDAO.findIssueById(1L);
+//			System.out.println("🔎 Fetched Issue5: ");
+//			fetchedIssues.forEach(System.out::println);
 ////
 //			fetchedIssue.setStatus(Issue.Status.IN_PROGRESS);
 //			issueDAO.updateIssue(fetchedIssue);

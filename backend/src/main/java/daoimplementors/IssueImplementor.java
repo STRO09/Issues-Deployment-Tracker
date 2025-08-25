@@ -9,12 +9,14 @@ import daointerfaces.IssueDAO;
 import models.Issue;
 import models.Issue.Priority;
 import models.Issue.Status;
+import models.User;
 import utils.HibernateUtil;
 
 public class IssueImplementor implements IssueDAO {
 
     @Override
-    public void createIssue(Issue issue) {
+    public boolean createIssue(Issue issue) {
+    	boolean success ;
         Transaction transaction = null;
         Session session = null;
 		try {
@@ -22,7 +24,9 @@ public class IssueImplementor implements IssueDAO {
             transaction = session.beginTransaction();
             session.persist(issue);
             transaction.commit();
+            success = true;
         } catch (Exception e) {
+			success = false;
 			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
 			}
@@ -32,6 +36,7 @@ public class IssueImplementor implements IssueDAO {
 				session.close();
 			}
 		}
+		return success;
     }
 
     @Override
@@ -188,7 +193,8 @@ public class IssueImplementor implements IssueDAO {
     }
 
     @Override
-    public void updateIssue(Issue issue) {
+    public boolean updateIssue(Issue issue) {
+    	boolean success ;
         Transaction transaction = null;
         Session session = null;
 		try {
@@ -196,7 +202,9 @@ public class IssueImplementor implements IssueDAO {
             transaction = session.beginTransaction();
             session.merge(issue);
             transaction.commit();
+            success = true;
         } catch (Exception e) {
+        	success = false;
 			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
 			}
@@ -206,10 +214,12 @@ public class IssueImplementor implements IssueDAO {
 				session.close();
 			}
 		}
+		return success;
     }
 
     @Override
-    public void deleteIssue(Long issueid) {
+    public boolean deleteIssue(Long issueid) {
+    	boolean success ;
         Transaction transaction = null;
         Session session = null;
 		try {
@@ -220,7 +230,9 @@ public class IssueImplementor implements IssueDAO {
                 session.delete(issue);
             }
             transaction.commit();
+            success = true;
         }catch (Exception e) {
+        	success = false;
 			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
 			}
@@ -230,5 +242,36 @@ public class IssueImplementor implements IssueDAO {
 				session.close();
 			}
 		}
+		return success;
     }
+
+	@Override
+	public boolean assignIssue(Long issueid, Long userId) {
+		// TODO Auto-generated method stub
+    	boolean success ;
+		Transaction transaction = null;
+        Session session = null;
+		try {
+			session = HibernateUtil.getSession();
+            transaction = session.beginTransaction();
+            Issue issue = session.get(Issue.class, issueid);
+            User user = session.get(User.class, userId);
+            if (issue != null && user!=null) {
+                issue.setAssignedTo(user);
+            }
+            transaction.commit();
+            success = true;
+        }catch (Exception e) {
+        	success  = false;
+			if (transaction != null && transaction.isActive()) {
+				transaction.rollback();
+			}
+			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+		return success;
+	}
 }

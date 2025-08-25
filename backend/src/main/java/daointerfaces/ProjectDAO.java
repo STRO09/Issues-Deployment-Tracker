@@ -6,7 +6,7 @@ import models.Project;
 
 public interface ProjectDAO {
 
-	public void createProject(Project project);
+	public boolean createProject(Project project);
 
 	public Project getProjectById(Long id);
 
@@ -14,7 +14,7 @@ public interface ProjectDAO {
 
 	public List<Project> getProjectsByUserId(Long userid);
 
-	public void updateProject(Project project);
+	public boolean updateProject(Project project);
 
-	public void deleteProject(Long id);
+	public  boolean deleteProject(Long id);
 }

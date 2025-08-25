@@ -13,8 +13,10 @@ import utils.HibernateUtil;
 public class DeploymentImplementor implements DeploymentDAO {
 
 	@Override
-	public void deployProject(Deployment deployment) {
+	public boolean deployProject(Deployment deployment) {
+
 		// TODO Auto-generated method stub
+    	boolean success ;
 		Transaction transaction = null;
 		Session session = null;
 		try {
@@ -22,7 +24,9 @@ public class DeploymentImplementor implements DeploymentDAO {
 			transaction = session.beginTransaction();
 			session.persist(deployment);
 			transaction.commit();
+			success = true;
 		} catch (Exception e) {
+			success = false;
 			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
 			}
@@ -32,6 +36,7 @@ public class DeploymentImplementor implements DeploymentDAO {
 				session.close();
 			}
 		}
+		return success;
 
 	}
 
@@ -89,8 +94,9 @@ public class DeploymentImplementor implements DeploymentDAO {
 	}
 
 	@Override
-	public void updateDeployment(Deployment deployment) {
+	public boolean updateDeployment(Deployment deployment) {
 		// TODO Auto-generated method stub
+    	boolean success ;
 		Transaction transaction = null;
 		Session session = null;
 		try {
@@ -98,7 +104,9 @@ public class DeploymentImplementor implements DeploymentDAO {
 			transaction = session.beginTransaction();
 			session.merge(deployment);
 			transaction.commit();
+			success = true;
 		} catch (Exception e) {
+			success = false;
 			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
 			}
@@ -108,12 +116,14 @@ public class DeploymentImplementor implements DeploymentDAO {
 				session.close();
 			}
 		}
+		return success;
 
 	}
 
 	@Override
-	public void linkIssue(Long deployId, Long issueId) {
+	public boolean linkIssue(Long deployId, Long issueId) {
 		// TODO Auto-generated method stub
+    	boolean success ;
 		Transaction transaction = null;
 
 		Session session = null;
@@ -135,7 +145,9 @@ public class DeploymentImplementor implements DeploymentDAO {
 			session.merge(deployment);
 
 			transaction.commit();
+			success = true;
 		} catch (Exception e) {
+			success = false;
 			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
 			}
@@ -145,12 +157,13 @@ public class DeploymentImplementor implements DeploymentDAO {
 				session.close();
 			}
 		}
-
+		return success;
 	}
 
 	@Override
-	public void deleteDeployment(Long deployid) {
+	public boolean deleteDeployment(Long deployid) {
 		// TODO Auto-generated method stub
+    	boolean success ;
 		Transaction transaction = null;
 		Deployment deployment = null;
 		Session session = null;
@@ -161,11 +174,14 @@ public class DeploymentImplementor implements DeploymentDAO {
 			if (deployment != null) {
 				session.delete(deployment);
 				transaction.commit();
+				success = true;
 			} else {
+				success = false;
 				transaction.rollback();
 				System.out.println("Deployment with the given id not found");
 			}
 		} catch (Exception e) {
+			success = false;
 			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
 			}
@@ -175,7 +191,7 @@ public class DeploymentImplementor implements DeploymentDAO {
 				session.close();
 			}
 		}
-
+		return success;
 	}
 
 }

@@ -6,7 +6,7 @@ import models.Comment;
 
 public interface CommentDAO {
 
-	public void addComment(Comment comment);
+	public boolean addComment(Comment comment);
 
 	public List<Comment> findCommentByIssueId(Long issueid);
 
@@ -14,5 +14,5 @@ public interface CommentDAO {
 
 	public List<Comment> findCommentByProjectId(Long projectid);
 
-	public void deleteComment(Long id);
+	public boolean deleteComment(Long id);
 }

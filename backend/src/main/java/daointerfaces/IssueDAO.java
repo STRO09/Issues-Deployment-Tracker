@@ -8,7 +8,9 @@ import models.Issue.Status;
 
 public interface IssueDAO {
 
-	public void createIssue(Issue issue);
+	public boolean createIssue(Issue issue);
+	
+	public boolean assignIssue(Long issueid,Long userId);
 	
 	public Issue findIssueById(Long issueid);
 	
@@ -22,8 +24,8 @@ public interface IssueDAO {
 	
 	public List<Issue> viewIssuesPerVersion(Long deployId);
 	
-	public void updateIssue(Issue issue);
+	public boolean updateIssue(Issue issue);
 	
-	public void deleteIssue(Long issueid);
+	public boolean deleteIssue(Long issueid);
 	
 }

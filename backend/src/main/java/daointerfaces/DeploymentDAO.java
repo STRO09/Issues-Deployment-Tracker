@@ -6,15 +6,15 @@ import models.Deployment;
 
 public interface DeploymentDAO {
 
-	public void deployProject(Deployment deployment);
+	public boolean deployProject(Deployment deployment);
 	
 	public Deployment findDeploymentById(Long deployid);
 	
 	public List<Deployment> findDeploymentsByProjectId(Long projectid);
 	
-	public void updateDeployment(Deployment deployment);
+	public boolean updateDeployment(Deployment deployment);
 	
-	public void linkIssue(Long deployId, Long issueId);
+	public boolean linkIssue(Long deployId, Long issueId);
 	
-	public void deleteDeployment(Long deployid);
+	public boolean deleteDeployment(Long deployid);
 }

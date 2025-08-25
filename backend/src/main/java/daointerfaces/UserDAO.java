@@ -8,7 +8,7 @@ import models.User.Role;
 
 public interface UserDAO {
 
-	public void registerUser(User user);
+	public boolean registerUser(User user);
 
 //	public boolean loginUser(String email, String password, Role role);
 	// doubt
@@ -20,9 +20,9 @@ public interface UserDAO {
 
 	public List<User> findUsersByRole(Role role);
 
-	public void updateProfile(User user);
+	public boolean updateProfile(User user);
 
-	public void deleteUser(Long id);
+	public boolean deleteUser(Long id);
 
 	public User getUserById(Long id);
 }

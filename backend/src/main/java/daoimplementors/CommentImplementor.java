@@ -15,8 +15,9 @@ import utils.HibernateUtil;
 public class CommentImplementor implements CommentDAO {
 
 	@Override
-	public void addComment(Comment comment) {
+	public boolean addComment(Comment comment) {
 		// TODO Auto-generated method stub
+		boolean success;
 		Transaction transaction = null;
 		Session session = null;
 		try {
@@ -25,11 +26,14 @@ public class CommentImplementor implements CommentDAO {
 			if (comment != null) {
 				session.persist(comment);
 				transaction.commit();
+				success = true;
 			} else {
 				transaction.rollback();
 				System.out.println("Comment is empty");
+				success = false;
 			}
 		} catch (Exception e) {
+			success = false;
 			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
 			}
@@ -39,12 +43,14 @@ public class CommentImplementor implements CommentDAO {
 				session.close();
 			}
 		}
+		return success;
 
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Comment> findCommentByIssueId(Long issueid) {
+
 		// TODO Auto-generated method stub
 		Transaction transaction = null;
 		List<Comment> comments = null;
@@ -149,8 +155,9 @@ public class CommentImplementor implements CommentDAO {
 	}
 
 	@Override
-	public void deleteComment(Long id) {
+	public boolean deleteComment(Long id) {
 		// TODO Auto-generated method stub
+		boolean success;
 		Transaction transaction = null;
 		Comment comment = null;
 		Session session = null;
@@ -162,11 +169,14 @@ public class CommentImplementor implements CommentDAO {
 				session.delete(comment);
 				System.out.println("Comment deleted successfully");
 				transaction.commit();
+				success = true;
 			} else {
 				transaction.rollback();
 				System.out.println("No such comment by the given id");
+				success = false;
 			}
 		} catch (Exception e) {
+			success = false;
 			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
 			}
@@ -176,6 +186,6 @@ public class CommentImplementor implements CommentDAO {
 				session.close();
 			}
 		}
-
+		return success;
 	}
 }

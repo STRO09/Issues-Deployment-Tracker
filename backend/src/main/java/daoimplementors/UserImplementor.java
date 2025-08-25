@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.omg.PortableInterceptor.SUCCESSFUL;
 
 import daointerfaces.UserDAO;
 import models.User;
@@ -14,8 +15,9 @@ import utils.HibernateUtil;
 public class UserImplementor implements UserDAO {
 
 	@Override
-	public void registerUser(User user) {
+	public boolean registerUser(User user) {
 		// TODO Auto-generated method stub
+    	boolean success ;
 		Transaction transaction = null;
 		Session session = null;
 		try {
@@ -27,11 +29,14 @@ public class UserImplementor implements UserDAO {
 			if (existingUser == null) {
 				session.persist(user);
 				transaction.commit();
+				success = true;
 				System.out.println("User registered successfully");
 			} else {
+				success = false;
 				System.out.println("User with the same email already exists");
 			}
 		} catch (Exception e) {
+			success= false;
 			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
 			}
@@ -41,6 +46,7 @@ public class UserImplementor implements UserDAO {
 				session.close();
 			}
 		}
+		return success;
 	}
 
 	@Override
@@ -148,8 +154,9 @@ public class UserImplementor implements UserDAO {
 	}
 
 	@Override
-	public void updateProfile(User user) {
+	public boolean updateProfile(User user) {
 		// TODO Auto-generated method stub
+    	boolean success ;
 		Session session = null;
 		Transaction transaction = null;
 		try {
@@ -161,12 +168,15 @@ public class UserImplementor implements UserDAO {
 			if (existingUser != null) {
 				session.merge(user);
 				transaction.commit();
+				success = true;
 				System.out.println("User data updated successfully");
 			} else {
+				success = false;
 				System.out.println("No user with the provided id exists");
 			}
 
 		} catch (Exception e) {
+			success = false;
 			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
 			}
@@ -176,12 +186,13 @@ public class UserImplementor implements UserDAO {
 				session.close();
 			}
 		}
-
+		return success;
 	}
 
 	@Override
-	public void deleteUser(Long id) {
+	public boolean deleteUser(Long id) {
 		// TODO Auto-generated method stub
+    	boolean success ;
 		Session session = null;
 		Transaction transaction = null;
 		try {
@@ -191,13 +202,16 @@ public class UserImplementor implements UserDAO {
 			if (user != null) {
 				session.delete(user);
 				transaction.commit();
+				success = true;
 				System.out.println("User deleted successfully");
 			} else {
 				transaction.rollback();
+				success = false;
 				System.out.println("No user with the provided id exists");
 			}
 
 		} catch (Exception e) {
+			success = false;
 			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
 			}
@@ -207,6 +221,7 @@ public class UserImplementor implements UserDAO {
 				session.close();
 			}
 		}
+		return success;
 	}
 
 	@Override

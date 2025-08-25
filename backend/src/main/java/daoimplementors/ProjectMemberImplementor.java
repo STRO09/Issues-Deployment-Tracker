@@ -13,7 +13,8 @@ import utils.HibernateUtil;
 public class ProjectMemberImplementor implements ProjectMemberDAO {
 
 	@Override
-	public void addMember(ProjectMember member) {
+	public boolean addMember(ProjectMember member) {
+    	boolean success ;
 		Transaction transaction = null;
 		Session session = null;
 		try {
@@ -21,9 +22,12 @@ public class ProjectMemberImplementor implements ProjectMemberDAO {
 			transaction = session.beginTransaction();
 			session.save(member);
 			transaction.commit();
+			success = true;
 		} catch (Exception e) {
+			success = false;
 			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
+		
 			}
 			e.printStackTrace();
 		} finally {
@@ -31,10 +35,12 @@ public class ProjectMemberImplementor implements ProjectMemberDAO {
 				session.close();
 			}
 		}
+		return success;
 	}
 
 	@Override
-	public void removeMember(Long projectmemberid) {
+	public boolean removeMember(Long projectmemberid) {
+    	boolean success ;
 		Transaction transaction = null;
 		ProjectMember member = null;
 		Session session = null;
@@ -44,7 +50,9 @@ public class ProjectMemberImplementor implements ProjectMemberDAO {
 			member = session.get(ProjectMember.class, projectmemberid);
 			session.delete(member);
 			transaction.commit();
+			success = true;
 		} catch (Exception e) {
+			success = false;
 			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
 			}
@@ -54,6 +62,7 @@ public class ProjectMemberImplementor implements ProjectMemberDAO {
 				session.close();
 			}
 		}
+		return success;
 	}
 
 	@Override
@@ -85,7 +94,8 @@ public class ProjectMemberImplementor implements ProjectMemberDAO {
 	}
 
 	@Override
-	public void updateProjectRole(ProjectMember member) {
+	public boolean updateProjectRole(ProjectMember member) {
+    	boolean success ;
 		Transaction transaction = null;
 		Session session = null;
 		try {
@@ -93,7 +103,9 @@ public class ProjectMemberImplementor implements ProjectMemberDAO {
 			transaction = session.beginTransaction();
 			session.update(member);
 			transaction.commit();
+			success = true;
 		} catch (Exception e) {
+			success = false;
 			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
 			}
@@ -103,5 +115,6 @@ public class ProjectMemberImplementor implements ProjectMemberDAO {
 				session.close();
 			}
 		}
+		return success;
 	}
 }
