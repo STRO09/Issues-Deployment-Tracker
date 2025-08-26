@@ -3,4 +3,5 @@ export interface Deployment {
   version: string;
   description: string;
   projectid: number;
+  deployedAt?: string;
 }

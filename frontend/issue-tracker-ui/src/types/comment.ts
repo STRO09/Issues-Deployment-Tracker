@@ -3,4 +3,5 @@ export interface Comment {
   content: string;
   authorid: number;
   issueid: number;
+  createdAt?: string;
 }

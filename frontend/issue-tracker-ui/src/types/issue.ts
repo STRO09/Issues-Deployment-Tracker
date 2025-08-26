@@ -1,5 +1,6 @@
 import { Priority } from "./priority";
 import { Status } from "./status";
+import { User } from "./user";
 
 export interface Issue {
   id: number;
@@ -8,4 +9,8 @@ export interface Issue {
   projectid: number;
   status: Status;
   priority: Priority;
+  createdBy: User;
+  assignedTo: User;
+  createdAt?: string;
+  updatedAt?: string;
 }
