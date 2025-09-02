@@ -48,8 +48,7 @@ public class Deployment {
 	private Project project;
 
 	// Deployment can fix/contain many issues
-	@ManyToMany
-	@JoinTable(name = "deployment_issues", joinColumns = @JoinColumn(name = "deployment_id"), inverseJoinColumns = @JoinColumn(name = "issue_id"))
+	@ManyToMany(mappedBy = "deployments")
 	private Set<Issue> issues = new HashSet<>();
 
 	// ---------------- CONSTRUCTORS ----------------

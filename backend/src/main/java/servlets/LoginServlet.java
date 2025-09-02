@@ -1,0 +1,108 @@
+package servlets;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
+import java.util.Date;
+import java.util.Optional;
+import java.util.Properties;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.mindrot.jbcrypt.BCrypt;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import daoimplementors.UserImplementor;
+import daointerfaces.UserDAO;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import models.User;
+
+/**
+ * Servlet implementation class LoginServlet
+ */
+@WebServlet("/api/auth/login")
+public class LoginServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	UserDAO userdao = new UserImplementor();
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public LoginServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			User logindata = mapper.readValue(request.getInputStream(), User.class);
+			Optional<User> fetcheduserdata =  userdao.findByEmail(logindata.getEmail());
+			
+			if (!fetcheduserdata.isPresent()) {
+	            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	            response.getWriter().write("{\"message\":\"Invalid email or password\"}");
+	            return;
+	        }
+			
+			User fetcheduser = fetcheduserdata.get();
+			
+			
+			if(!BCrypt.checkpw(logindata.getPassword(), fetcheduser.getPassword() )) {
+	            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	            response.getWriter().write("{\"message\":\"Invalid email or password\"}");
+				return;
+			}
+			
+			
+			Properties properties = new Properties();
+			try(InputStream inputStream = getClass().getClassLoader().getResourceAsStream("db.properties") ){
+				properties.load(inputStream);
+			}
+			String SECRET_KEY = properties.getProperty("jwt.SECRET_KEY");
+			Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+			
+			
+			  String jwt = Jwts.builder()
+	                  .setSubject(String.valueOf(fetcheduser.getId()))
+	                  .claim("username", fetcheduser.getUsername() != null ? fetcheduser.getUsername().toString() : "UNASSIGNED")
+	                  .claim("role", fetcheduser.getRole() != null ? fetcheduser.getRole().toString() : "UNASSIGNED")
+	                  .setIssuedAt(new Date())
+	                  .setExpiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000)) // 24h
+	                  .signWith(SignatureAlgorithm.HS256, key)
+	                  .compact();
+			
+			  
+			  response.setStatus(HttpServletResponse.SC_OK);
+	          response.getWriter().write("{\"token\":\"" + jwt + "\"}");
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+	            response.getWriter().write("{\"message\":\"Server error\"}");
+	            e.printStackTrace();
+		}
+
+	}
+
+}

@@ -9,12 +9,13 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpFilter;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
  * Servlet Filter implementation class CorsFilter
  */
-@WebFilter("/CorsFilter")
+@WebFilter("/*")
 public class CorsFilter extends HttpFilter implements Filter {
 
 	/**
@@ -40,9 +41,16 @@ public class CorsFilter extends HttpFilter implements Filter {
 		// TODO Auto-generated method stub
 		// place your code here
 		HttpServletResponse response = (HttpServletResponse) resp;
+		HttpServletRequest req = (HttpServletRequest) request;
 		response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
 		response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 		response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+		// Handle preflight immediately
+		if ("OPTIONS".equalsIgnoreCase(req.getMethod())) {
+			response.setStatus(HttpServletResponse.SC_OK);
+			return;
+		}
 
 		// pass the request along the filter chain
 		chain.doFilter(request, response);

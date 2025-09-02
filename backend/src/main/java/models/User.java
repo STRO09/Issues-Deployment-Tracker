@@ -27,20 +27,20 @@ public class User {
 	private Long id; // Primary Key
 //	private int id; // less space and better since its a smaller system
 
-	@Column(nullable = false, unique = true, length = 50)
+	@Column(unique = true, length = 50)
 	private String username;
 
-	@Column(nullable = false, unique = true, length = 100)
+	@Column(nullable = false, unique = true, length = 254)
 	private String email;
 
 	@Column(nullable = false, length = 60)
 	private String password; // Store hashed password (BCrypt/Argon2)
 
-	@Column(nullable = false, length = 100)
+	@Column(nullable = false, length = 200)
 	private String fullName;
 
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, length = 20)
+	@Column( length = 20)
 	private Role role; // ADMIN, DEV, TESTER, PM
 
 	@Column(nullable = false, updatable = false)

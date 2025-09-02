@@ -21,6 +21,9 @@ public class Comment {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(nullable = false, length = 150)
+	private String title;
+
 	@Column(nullable = false, columnDefinition = "TEXT")
 	private String content;
 
@@ -43,7 +46,8 @@ public class Comment {
 	public Comment() {
 	}
 
-	public Comment(String content, Issue issue, User author) {
+	public Comment(String title, String content, Issue issue, User author) {
+		this.title = title;
 		this.content = content;
 		this.issue = issue;
 		this.author = author;
@@ -62,6 +66,15 @@ public class Comment {
 	}
 
 	// Getters & Setters -----------------
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	public Long getId() {
 		return id;
 	}

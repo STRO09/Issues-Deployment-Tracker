@@ -1,0 +1,7 @@
+ORM with JPA and hibernate done
+DAOs and implementors created.
+Cors Filter added.
+Creating and Testing Servlets with Postman. Creating servlets keeping in mind to process jsonn objects.
+need to create a secret key for generating jwt. Random string, at least 32+ characters for HS256.
+will generate it with OPENSSl, with commnd: openssl rand -base64 32
+now using embedded jetty(mini embedded server) to test servlets instead of embedded tomcat since jetty is lighter and has less boiler plate.
