@@ -73,19 +73,20 @@
 		</dependency>
 
 
-		<!-- Jetty embedded Server -->
+		<!-- Jetty embedded Server
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-server</artifactId>
 			<version>9.4.51.v20230217</version>
 		</dependency>
 
-		<!-- Jetty Servlet support -->
+		Jetty Servlet support
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-servlet</artifactId>
 			<version>9.4.51.v20230217</version>
 		</dependency>
+		 -->
 
 
 	</dependencies>

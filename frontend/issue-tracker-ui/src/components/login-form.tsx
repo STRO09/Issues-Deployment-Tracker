@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence, useAnimationFrame } from "framer-motion";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
@@ -9,6 +10,7 @@ export function LoginForm() {
   const [isLogin, setIsLogin] = useState(true); // login/register toggle
   const [animating, setAnimating] = useState(false); // blocks form rendering until switch ends
   const [showSocial, setShowSocial] = useState(false);
+  const router = useRouter();
 
   const handleSwitch = () => {
     setAnimating(true); // start hiding form contents
@@ -30,15 +32,18 @@ export function LoginForm() {
     }
 
     try {
-      const res = await fetch("http://localhost:8080/IssuesandDeploymentTracker/api/register", {
-        method: "POST",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify({
-          fullName: formData.get("name"),
-          email: formData.get("mail"),
-          password: formData.get("pass"),
-        }),
-      });
+      const res = await fetch(
+        "http://localhost:8080/IssuesandDeploymentTracker/api/auth/register",
+        {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify({
+            fullName: (formData.get("name") as string)?.trim(),
+            email: (formData.get("mail") as string)?.trim(),
+            password: (formData.get("pass") as string)?.trim(),
+          }),
+        }
+      );
 
       if (!res.ok) {
         const err = await res.json();
@@ -51,6 +56,38 @@ export function LoginForm() {
     } catch (error) {
       alert("An error occured....");
       console.log(error);
+    }
+  }
+
+  async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+
+    try {
+      const res = await fetch(
+        "http://localhost:8080/IssuesandDeploymentTracker/api/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: (formData.get("email") as string)?.trim(),
+            password: (formData.get("password") as string)?.trim(),
+          }),
+        }
+      );
+      if (!res.ok) {
+        const err = await res.json();
+        console.log(err.message || "Login failed.");
+      }
+      const data = await res.json();
+      console.log(data);
+      alert("Login successful!");
+      router.push("/");
+
+    } catch (error) {
+      console.log(error || "An error Occured...");
     }
   }
 
@@ -91,12 +128,13 @@ export function LoginForm() {
                           Login to your account
                         </p>
                       </div>
-                      <form action="">
+                      <form action="" onSubmit={handleLogin}>
                         <div className="grid gap-3">
                           <Label htmlFor="email">Email</Label>
                           <Input
                             id="email"
                             type="email"
+                            name="email"
                             placeholder="m@example.com"
                             maxLength={254}
                             required
@@ -112,7 +150,13 @@ export function LoginForm() {
                               Forgot your password?
                             </a>
                           </div>
-                          <Input id="password" type="password" maxLength={200} required />
+                          <Input
+                            id="password"
+                            name="password"
+                            type="password"
+                            maxLength={200}
+                            required
+                          />
                         </div>
                         <Button type="submit" className="w-full mt-4">
                           Login
