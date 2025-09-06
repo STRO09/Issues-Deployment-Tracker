@@ -35,7 +35,7 @@ public class Tests {
         boolean status = dao.registerUser(u);
         assertTrue(status, "User Registration Test passed");
         
-		User fetcheduser = session.get(User.class, u.getFullName());
+		User fetcheduser = session.get(User.class, u.getId());
 		assertEquals("Test User", fetcheduser.getFullName());
         
 	}
