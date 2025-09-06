@@ -5,5 +5,5 @@ export interface ProjectMember {
     projectid: number;
     userid:number;
     projectrole: ProjectRole;
-    joinedAt: String
+    joinedAt: string
 }
