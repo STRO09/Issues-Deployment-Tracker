@@ -1,6 +1,5 @@
 package unittests;
 
-import org.hibernate.Transaction;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -31,12 +30,11 @@ public class Tests {
 //	
 	@Test
 	void saveUser() {
-		Transaction transaction = session.beginTransaction();
+
 		User u = new User("testuser", "tu@example.com", "hash", "Test User", User.Role.DEVELOPER);
         boolean status = dao.registerUser(u);
         assertTrue(status, "User Registration Test passed");
         
-        transaction.commit();
 	}
 	
 	@Test 
