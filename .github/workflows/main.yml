@@ -1,0 +1,41 @@
+# Name of the workflow (appears in GitHub Actions tab)
+name: Backend CI  
+
+on:
+  # Run workflow when pushing to main branch
+  push:
+    branches: [ "main" ]
+  # Run workflow when opening/updating a pull request targeting main
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    # GitHub provides virtual machines (runners)
+    # 'ubuntu-latest' is free, fast, and has Java/Maven preinstalled
+    runs-on: ubuntu-latest  
+
+    steps:
+      # Step 1: Get your repository code into the runner
+      - name: Checkout repository
+        uses: actions/checkout@v4  
+
+      # Step 2: Install Java (JDK 8 in your case)
+      - name: Set up JDK 8
+        uses: actions/setup-java@v4
+        with:
+          java-version: '8'        # Java version required for your project
+          distribution: 'temurin'  # Open-source JDK distribution
+
+      # Step 3: Define environment variable for test environment
+      # $GITHUB_ENV is a special file to persist env vars between steps
+      - name: Set environment to test
+        run: echo "ENVIRONMENT=test" >> $GITHUB_ENV  
+
+      # Step 4: Build the project and run JUnit tests using Maven
+      # -B means batch mode (non-interactive, cleaner CI logs)
+      # 'clean' removes old builds, 'verify' compiles and runs tests
+      # to only build the backend
+      - name: Build and run tests with Maven
+        run: mvn -B clean verify
+        working-directory: backend
