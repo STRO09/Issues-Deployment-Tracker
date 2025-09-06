@@ -24,8 +24,11 @@ public class HibernateUtil {
 	static {
 		
 		try {
+			String env = System.getenv("ENVIRONMENT"); // "test" or "prod"
+			String propsFile = "test".equals(env) ? "db-test.properties" : "db.properties";
+
 		Properties properties = new Properties();
-		try(InputStream inputStream = HibernateUtil.class.getClassLoader().getResourceAsStream("db.properties")){
+		try(InputStream inputStream = HibernateUtil.class.getClassLoader().getResourceAsStream(propsFile)){
 			 if (inputStream == null) {
                  throw new RuntimeException("Unable to find hibernate.properties");
              }

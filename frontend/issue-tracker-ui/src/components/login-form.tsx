@@ -1,10 +1,11 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence, useAnimationFrame } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
+import Cookies from "js-cookie";
 
 export function LoginForm() {
   const [isLogin, setIsLogin] = useState(true); // login/register toggle
@@ -45,11 +46,11 @@ export function LoginForm() {
         }
       );
 
-      if (!res.ok) {
-        const err = await res.json();
-        console.log(err.message || "Registration failed.");
-      }
       const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message || "Registration failed.");
+      }
+
       console.log(data);
       alert("Registration successful!");
       setIsLogin(true);
@@ -77,15 +78,15 @@ export function LoginForm() {
           }),
         }
       );
-      if (!res.ok) {
-        const err = await res.json();
-        console.log(err.message || "Login failed.");
-      }
       const data = await res.json();
-      console.log(data);
+      if (!res.ok) {
+        console.log(data.message || "Login failed.");
+      }
+
+      Cookies.set("token", data.token, { expires: 7 });
+      console.log("JWT Token:", data.token);
       alert("Login successful!");
       router.push("/");
-
     } catch (error) {
       console.log(error || "An error Occured...");
     }
