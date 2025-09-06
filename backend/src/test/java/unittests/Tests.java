@@ -44,7 +44,7 @@ public class Tests {
 	
 	@Test 
 	void fetchUser() {
-		User fetcheduser = session.get(User.class, 1);
+		User fetcheduser = session.get(User.class, 1L);
 		assertEquals("testuser", fetcheduser.getFullName());
 		
 		
