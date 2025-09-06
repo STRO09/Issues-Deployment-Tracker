@@ -23,7 +23,7 @@ import javax.persistence.UniqueConstraint;
 public class User {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO) //maybe change it back to identity for prod
+	@GeneratedValue(strategy = GenerationType.AUTO) //maybe change it back to identity in prod
 	private Long id; // Primary Key
 //	private int id; // less space and better since its a smaller system
 

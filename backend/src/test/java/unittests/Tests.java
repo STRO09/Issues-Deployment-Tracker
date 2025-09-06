@@ -29,19 +29,15 @@ public class Tests {
 //	}
 //	
 	@Test
-	void saveUser() {
+	void save_fetch_User() {
 
 		User u = new User("testuser", "tu@example.com", "hash", "Test User", User.Role.DEVELOPER);
         boolean status = dao.registerUser(u);
         assertTrue(status, "User Registration Test passed");
         
-	}
-	
-	@Test 
-	void fetchUser() {
-		User fetcheduser = session.get(User.class, 1L);
+		User fetcheduser = session.get(User.class, u.getFullName());
 		assertEquals("Test User", fetcheduser.getFullName());
-		
-		
+        
 	}
+
 }
