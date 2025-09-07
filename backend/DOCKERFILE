@@ -1,5 +1,5 @@
-# Use Maven + JDK 8 to build
-FROM maven:3.9.6-openjdk-8 AS builder
+# Stage 1: Build WAR with Maven + JDK 8
+FROM maven:3.8.8-openjdk-8 AS builder
 WORKDIR /app
 
 # Copy source and build WAR
@@ -18,13 +18,13 @@ ENV TOMCAT_VER=9.0.80
 ENV CATALINA_HOME=/usr/local/tomcat
 ENV PATH=$CATALINA_HOME/bin:$PATH
 
-# Download Tomcat from archive
+# Download Tomcat from archive (since 9.0.80 is old)
 RUN wget https://archive.apache.org/dist/tomcat/tomcat-9/v$TOMCAT_VER/bin/apache-tomcat-$TOMCAT_VER.tar.gz \
     && mkdir -p $CATALINA_HOME \
     && tar xzf apache-tomcat-$TOMCAT_VER.tar.gz -C $CATALINA_HOME --strip-components=1 \
     && rm apache-tomcat-$TOMCAT_VER.tar.gz
 
-# Copy WAR from builder
+# Copy WAR from builder stage
 COPY --from=builder /app/target/IssuesandDeploymentTracker-0.0.1-SNAPSHOT.war $CATALINA_HOME/webapps/ROOT.war
 
 EXPOSE 8080
