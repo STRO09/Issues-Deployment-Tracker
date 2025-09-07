@@ -46,9 +46,3 @@ jobs:
         env:
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
 
-      # Step 6: Deploy Docker image to Render (CD)
-      - name: Deploy to Render
-        run: render deploy web --service-id ${{ secrets.RENDER_SERVICE_ID }}
-        working-directory: backend
-        env:
-          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
