@@ -136,7 +136,7 @@ export function LoginForm() {
                             id="email"
                             type="email"
                             name="email"
-                            placeholder="m@example.com"
+                            placeholder="Enter your email"
                             maxLength={254}
                             required
                           />
@@ -156,6 +156,7 @@ export function LoginForm() {
                             name="password"
                             type="password"
                             maxLength={200}
+                            placeholder="Enter your password"
                             required
                           />
                         </div>
@@ -258,7 +259,7 @@ export function LoginForm() {
                             type="text"
                             name="name"
                             maxLength={200}
-                            placeholder="John Doe"
+                            placeholder="Full Name"
                             required
                           />
                         </div>

@@ -5,3 +5,4 @@ Creating and Testing Servlets with Postman. Creating servlets keeping in mind to
 need to create a secret key for generating jwt. Random string, at least 32+ characters for HS256.
 will generate it with OPENSSl, with commnd: openssl rand -base64 32
 now using embedded jetty(mini embedded server) to test servlets instead of embedded tomcat since jetty is lighter and has less boiler plate.
+also did backend CI with GitHub actions and CI/CD for frontend with vercel. Added Junit Tests.
