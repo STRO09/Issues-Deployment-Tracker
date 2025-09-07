@@ -1,16 +1,20 @@
-# Stage 1: Build WAR with Maven + JDK 8
-FROM maven:3.8.8-openjdk-8 AS builder
+# ===== Stage 1: Build with Maven =====
+FROM maven:3.8.5-openjdk-8 AS builder
 WORKDIR /app
 
-# Copy source and build WAR
+# Copy pom.xml and download dependencies first (better cache)
 COPY pom.xml .
+RUN mvn dependency:go-offline -B
+
+# Copy source and build WAR
 COPY src ./src
 RUN mvn -B clean package -DskipTests
 
-# Stage 2: Run with Tomcat
+
+# ===== Stage 2: Tomcat runtime =====
 FROM openjdk:8-jdk-alpine
 
-# Install wget and tar
+# Install wget and unzip
 RUN apk add --no-cache wget bash tar
 
 # Set Tomcat environment
@@ -27,5 +31,8 @@ RUN wget https://archive.apache.org/dist/tomcat/tomcat-9/v$TOMCAT_VER/bin/apache
 # Copy WAR from builder stage
 COPY --from=builder /app/target/IssuesandDeploymentTracker-0.0.1-SNAPSHOT.war $CATALINA_HOME/webapps/ROOT.war
 
+# Expose Tomcat port
 EXPOSE 8080
+
+# Run Tomcat
 CMD ["catalina.sh", "run"]
