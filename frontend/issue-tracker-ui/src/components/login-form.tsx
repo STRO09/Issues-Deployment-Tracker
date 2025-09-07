@@ -34,7 +34,7 @@ export function LoginForm() {
 
     try {
       const res = await fetch(
-        "http://localhost:8080/IssuesandDeploymentTracker/api/auth/register",
+        "https://issues-deployment-tracker-backend.onrender.com/IssuesandDeploymentTracker/api/auth/register",
         {
           method: "POST",
           headers: { "Content-type": "application/json" },
@@ -66,7 +66,7 @@ export function LoginForm() {
 
     try {
       const res = await fetch(
-        "http://localhost:8080/IssuesandDeploymentTracker/api/auth/login",
+        "https://issues-deployment-tracker-backend.onrender.com/IssuesandDeploymentTracker/api/auth/login",
         {
           method: "POST",
           headers: {
