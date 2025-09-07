@@ -1,4 +1,17 @@
-# Use OpenJDK 8 on Alpine Linux
+# ===== Stage 1: Build with Maven =====
+FROM maven:3.8.5-openjdk-8 AS builder
+WORKDIR /app
+
+# Copy pom.xml and download dependencies first (better cache)
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
+
+# Copy source and build WAR
+COPY src ./src
+RUN mvn -B clean package -DskipTests
+
+
+# ===== Stage 2: Tomcat runtime =====
 FROM openjdk:8-jdk-alpine
 
 # Install wget and unzip
@@ -15,9 +28,8 @@ RUN wget https://downloads.apache.org/tomcat/tomcat-9/v$TOMCAT_VER/bin/apache-to
     && tar xzf apache-tomcat-$TOMCAT_VER.tar.gz -C $CATALINA_HOME --strip-components=1 \
     && rm apache-tomcat-$TOMCAT_VER.tar.gz
 
-# Copy the WAR built by CI into Tomcat
-COPY target/IssuesandDeploymentTracker-0.0.1-SNAPSHOT.war $CATALINA_HOME/webapps/ROOT.war
-
+# Copy WAR from builder stage
+COPY --from=builder /app/target/IssuesandDeploymentTracker-0.0.1-SNAPSHOT.war $CATALINA_HOME/webapps/ROOT.war
 
 # Expose Tomcat port
 EXPOSE 8080
