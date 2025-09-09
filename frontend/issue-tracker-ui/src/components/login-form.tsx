@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "./ui/button";
@@ -7,10 +7,22 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import Cookies from "js-cookie";
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return isMobile;
+}
+
 export function LoginForm() {
   const [isLogin, setIsLogin] = useState(true); // login/register toggle
   const [animating, setAnimating] = useState(false); // blocks form rendering until switch ends
   const [showSocial, setShowSocial] = useState(false);
+  const isMobile = useIsMobile();
   const router = useRouter();
 
   const handleSwitch = () => {
@@ -99,16 +111,23 @@ export function LoginForm() {
         <motion.div
           animate={{ x: isLogin ? 0 : "100%" }}
           transition={{ duration: 0.5 }}
-          className="absolute top-0 left-0 h-full w-1/2 bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white text-2xl font-bold"
+          className="hidden md:flex    /* 🔴 hide completely on mobile */
+    absolute top-0 left-0 h-full w-1/2
+    bg-gradient-to-br from-indigo-500 to-purple-500
+    items-center justify-center text-white text-2xl font-bold
+  "
         >
           {isLogin ? "Welcome Back!" : "Join Us Today!"}
         </motion.div>
 
         {/* Form Panel */}
         <motion.div
-          animate={{ x: isLogin ? "100%" : 0 }}
+          animate={{ x: isMobile ? 0 : isLogin ? "100%" : 0, }}
           transition={{ duration: 0.5 }}
-          className="absolute top-0 left-0 h-full w-1/2 flex items-center justify-center p-10"
+          className="relative w-full right-0  /* 🔴 full width on mobile */
+    md:absolute md:top-0 md:left-0 md:h-full md:w-1/2
+    flex items-center justify-center p-10
+  "
         >
           <AnimatePresence mode="wait">
             {!animating && (
