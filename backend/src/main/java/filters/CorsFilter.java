@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet Filter implementation class CorsFilter
  */
-@WebFilter("/*")
+@WebFilter("issues-deployment-tracker-backend.onrender.com/*")
 public class CorsFilter extends HttpFilter implements Filter {
 
 	/**
