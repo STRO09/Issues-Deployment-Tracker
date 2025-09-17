@@ -42,6 +42,7 @@ public class CorsFilter extends HttpFilter implements Filter {
 		// place your code here
 		HttpServletResponse response = (HttpServletResponse) resp;
 		HttpServletRequest req = (HttpServletRequest) request;
+		System.out.println("CorsFilter hit for: " + req.getRequestURI());
 		String origin = req.getHeader("Origin");
 		if (origin != null && origin.endsWith(".vercel.app")) {
 			response.setHeader("Access-Control-Allow-Origin", origin);
