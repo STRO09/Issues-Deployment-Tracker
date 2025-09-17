@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * Servlet Filter implementation class CorsFilter
  */
 // @WebFilter("/*")
-public class CorsFilter extends HttpFilter implements Filter {
+public class CorsFilter implements Filter {
 
 	/**
 	 * @see HttpFilter#HttpFilter()
