@@ -46,7 +46,7 @@ export function LoginForm() {
 
     try {
       const res = await fetch(
-        "https://issues-deployment-tracker-backend.onrender.com/IssuesandDeploymentTracker-0.0.1-SNAPSHOT/api/auth/register",
+        "https://issues-deployment-tracker-backend.onrender.com/api/auth/register",
         {
           method: "POST",
           headers: { "Content-type": "application/json" },
@@ -78,7 +78,7 @@ export function LoginForm() {
 
     try {
       const res = await fetch(
-        "https://issues-deployment-tracker-backend.onrender.com/IssuesandDeploymentTracker-0.0.1-SNAPSHOT/api/auth/login",
+        "https://issues-deployment-tracker-backend.onrender.com/api/auth/login",
         {
           method: "POST",
           headers: {
@@ -122,7 +122,7 @@ export function LoginForm() {
 
         {/* Form Panel */}
         <motion.div
-          animate={{ x: isMobile ? 0 : isLogin ? "100%" : 0, }}
+          animate={{ x: isMobile ? 0 : isLogin ? "100%" : 0 }}
           transition={{ duration: 0.5 }}
           className="relative w-full right-0  /* 🔴 full width on mobile */
     md:absolute md:top-0 md:left-0 md:h-full md:w-1/2
