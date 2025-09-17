@@ -48,6 +48,10 @@ public class CorsFilter implements Filter {
 		if (origin != null && origin.endsWith(".vercel.app")) {
 			response.setHeader("Access-Control-Allow-Origin", origin);
 		}
+		else {
+		    // fallback: allow your known frontend explicitly
+		    response.setHeader("Access-Control-Allow-Origin", "https://issues-deployment-tracker.vercel.app");
+		}
 
 		// response.setHeader("Access-Control-Allow-Origin",
 		// "https://issues-deployment-tracker.vercel.app");
