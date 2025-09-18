@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet Filter implementation class CorsFilter
  */
-// @WebFilter("/*")
+@WebFilter("/*")
 public class CorsFilter implements Filter {
 
 	/**
@@ -27,7 +27,7 @@ public class CorsFilter implements Filter {
 		// TODO Auto-generated constructor stub
 	}
 
-	/**
+	/** 
 	 * @see Filter#destroy()
 	 */
 	public void destroy() {
