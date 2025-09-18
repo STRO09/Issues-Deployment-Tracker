@@ -28,8 +28,8 @@ RUN wget https://archive.apache.org/dist/tomcat/tomcat-9/v$TOMCAT_VER/bin/apache
     && tar xzf apache-tomcat-$TOMCAT_VER.tar.gz -C $CATALINA_HOME --strip-components=1 \
     && rm apache-tomcat-$TOMCAT_VER.tar.gz
 
-# Run Tomcat, replacing the default port with Render's PORT at runtime
-CMD sed -i "s/port=\"8080\"/port=\"${PORT}\"/" $CATALINA_HOME/conf/server.xml && catalina.sh run
+# Fix Tomcat port to use Render's PORT environment variable
+RUN sed -i "s/port=\"8080\"/port=\"${PORT:-10000}\"/" $CATALINA_HOME/conf/server.xml
 
 # Copy WAR from builder stage
 COPY --from=builder /app/target/IssuesandDeploymentTracker-0.0.1-SNAPSHOT.war $CATALINA_HOME/webapps/ROOT.war
