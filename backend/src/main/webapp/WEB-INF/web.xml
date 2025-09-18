@@ -17,6 +17,7 @@
 	<filter>
 		<filter-name>CorsFilter</filter-name>
 		<filter-class>filters.CorsFilter</filter-class>
+
 	</filter>
 
 	<filter-mapping>
@@ -34,14 +35,16 @@
 		<url-pattern>/api/auth/login</url-pattern>
 	</servlet-mapping>
 	<servlet>
-    <servlet-name>RegisterServlet</servlet-name>
-    <servlet-class>servlets.RegisterServlet</servlet-class>
-</servlet>
+		<servlet-name>RegisterServlet</servlet-name>
+		<servlet-class>servlets.RegisterServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
 
-<servlet-mapping>
-    <servlet-name>RegisterServlet</servlet-name>
-    <url-pattern>/api/auth/register</url-pattern>
-</servlet-mapping>
-	
+	<servlet-mapping>
+		<servlet-name>RegisterServlet</servlet-name>
+		<url-pattern>/api/auth/register</url-pattern>
+
+	</servlet-mapping>
+
 
 </web-app>
