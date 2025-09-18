@@ -38,6 +38,20 @@ public class RegisterServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		String origin = request.getHeader("Origin");
+		if (origin != null && origin.endsWith(".vercel.app")) {
+		    response.setHeader("Access-Control-Allow-Origin", origin);
+		} else {
+		    response.setHeader("Access-Control-Allow-Origin", "https://issues-deployment-tracker.vercel.app");
+		}
+		response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+		response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+		// Handle preflight immediately
+		if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+		    response.setStatus(HttpServletResponse.SC_OK);
+		    return;
+		}
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
@@ -49,6 +63,20 @@ public class RegisterServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.setContentType("application/json");
+		String origin = request.getHeader("Origin");
+		if (origin != null && origin.endsWith(".vercel.app")) {
+		    response.setHeader("Access-Control-Allow-Origin", origin);
+		} else {
+		    response.setHeader("Access-Control-Allow-Origin", "https://issues-deployment-tracker.vercel.app");
+		}
+		response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+		response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+		// Handle preflight immediately
+		if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+		    response.setStatus(HttpServletResponse.SC_OK);
+		    return;
+		}
 
 		try {
 			ObjectMapper mapper = new ObjectMapper();
