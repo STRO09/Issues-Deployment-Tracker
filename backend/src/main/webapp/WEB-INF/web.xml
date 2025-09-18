@@ -31,7 +31,17 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>LoginServlet</servlet-name>
-		<url-pattern>/LoginServlet</url-pattern>
+		<url-pattern>/api/auth/login</url-pattern>
 	</servlet-mapping>
+	<servlet>
+    <servlet-name>RegisterServlet</servlet-name>
+    <servlet-class>servlets.RegisterServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>RegisterServlet</servlet-name>
+    <url-pattern>/api/auth/register</url-pattern>
+</servlet-mapping>
+	
 
 </web-app>
