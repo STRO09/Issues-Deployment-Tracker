@@ -44,17 +44,17 @@ public class CorsFilter implements Filter {
 		HttpServletResponse response = (HttpServletResponse) resp;
 		HttpServletRequest req = (HttpServletRequest) request;
 		System.out.println("CorsFilter hit for: " + req.getRequestURI());
-		String origin = req.getHeader("Origin");
-		if (origin != null && origin.endsWith(".vercel.app")) {
-			response.setHeader("Access-Control-Allow-Origin", origin);
-		}
-		else {
-		    // fallback: allow your known frontend explicitly
-		    response.setHeader("Access-Control-Allow-Origin", "https://issues-deployment-tracker.vercel.app");
-		}
+//		String origin = req.getHeader("Origin");
+//		if (origin != null && origin.endsWith(".vercel.app")) {
+//			response.setHeader("Access-Control-Allow-Origin", origin);
+//		}
+//		else {
+//		    // fallback: allow your known frontend explicitly
+//		    response.setHeader("Access-Control-Allow-Origin", "https://issues-deployment-tracker.vercel.app");
+//		}
 
-		// response.setHeader("Access-Control-Allow-Origin",
-		// "https://issues-deployment-tracker.vercel.app");
+		 response.setHeader("Access-Control-Allow-Origin","https://issues-deployment-tracker.vercel.app");
+//		response.setHeader("Access-Control-Allow-Origin","http://localhost:3000");
 		response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 		response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 

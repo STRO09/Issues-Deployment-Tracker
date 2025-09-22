@@ -14,7 +14,9 @@
 		<welcome-file>default.htm</welcome-file>
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
-	<filter>
+	
+	
+<!-- <filter>
 		<filter-name>CorsFilter</filter-name>
 		<filter-class>filters.CorsFilter</filter-class>
 
@@ -50,5 +52,6 @@
 
 	</servlet-mapping>
 
-
+ -->
+	
 </web-app>

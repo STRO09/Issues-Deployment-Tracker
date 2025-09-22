@@ -46,7 +46,9 @@ export function LoginForm() {
 
     try {
       const res = await fetch(
-        "https://issues-deployment-tracker-backend.onrender.com/api/auth/register",
+        // "https://issues-deployment-tracker-backend.onrender.com/api/auth/register",
+        // "http://localhost:8080/IssuesandDeploymentTracker/api/auth/register",
+        "/api/proxy/auth/register",
         {
           method: "POST",
           headers: { "Content-type": "application/json" },
@@ -78,7 +80,9 @@ export function LoginForm() {
 
     try {
       const res = await fetch(
-        "https://issues-deployment-tracker-backend.onrender.com/api/auth/login",
+        // "https://issues-deployment-tracker-backend.onrender.com/api/auth/login",
+        //  "http://localhost:8080/IssuesandDeploymentTracker/api/auth/login",
+        "/api/proxy/auth/register",
         {
           method: "POST",
           headers: {
