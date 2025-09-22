@@ -57,6 +57,11 @@ public class CorsFilter implements Filter {
 //		response.setHeader("Access-Control-Allow-Origin","http://localhost:3000");
 		response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 		response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+		response.setHeader("Access-Control-Allow-Credentials", "true"); // if using cookies/auth
+		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+		response.setHeader("Pragma", "no-cache");
+		response.setHeader("Expires", "0");
+
 
 		// Handle preflight immediately
 		if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
