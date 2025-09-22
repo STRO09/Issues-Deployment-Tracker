@@ -37,13 +37,13 @@ public class CorsFilter implements Filter {
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
-	public void doFilter(ServletRequest request, ServletResponse resp, FilterChain chain)
+	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
 			throws IOException, ServletException {
 		// TODO Auto-generated method stub
 		// place your code here
 		HttpServletResponse response = (HttpServletResponse) resp;
-		HttpServletRequest req = (HttpServletRequest) request;
-		System.out.println("CorsFilter hit for: " + req.getRequestURI());
+		HttpServletRequest request = (HttpServletRequest) req;
+		System.out.println("CorsFilter hit for: " + request.getRequestURI());
 //		String origin = req.getHeader("Origin");
 //		if (origin != null && origin.endsWith(".vercel.app")) {
 //			response.setHeader("Access-Control-Allow-Origin", origin);
@@ -59,13 +59,13 @@ public class CorsFilter implements Filter {
 		response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
 		// Handle preflight immediately
-		if ("OPTIONS".equalsIgnoreCase(req.getMethod())) {
+		if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
 			response.setStatus(HttpServletResponse.SC_OK);
 			return;
 		}
 
 		// pass the request along the filter chain
-		chain.doFilter(request, response);
+		chain.doFilter(req, resp);
 	}
 
 	/**
