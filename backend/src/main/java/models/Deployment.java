@@ -31,7 +31,10 @@ public class Deployment {
 
 	@Column(columnDefinition = "TEXT")
 	private String description; // release notes or summary
-
+	
+	@Column(columnDefinition = "TEXT")
+	private String url;
+	
 	@Column(nullable = false, updatable = false)
 	private LocalDateTime deployedAt;
 
@@ -62,9 +65,10 @@ public class Deployment {
 	public Deployment() {
 	}
 
-	public Deployment(String version, String description, Project project) {
+	public Deployment(String version, String description, String url, Project project) {
 		this.version = version;
 		this.description = description;
+		this.url = url;
 		this.project = project;
 	}
 
@@ -88,6 +92,14 @@ public class Deployment {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 	public LocalDateTime getDeployedAt() {

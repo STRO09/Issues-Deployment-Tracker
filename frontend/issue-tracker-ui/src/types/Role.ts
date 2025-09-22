@@ -3,4 +3,6 @@ export enum Role {
   DEVELOPER = "DEVELOPER",
   TESTER = "TESTER",
   PROJECT_MANAGER = "PROJECT_MANAGER",
+  NONE = "NONE"
+
 }

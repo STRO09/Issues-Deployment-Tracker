@@ -47,8 +47,8 @@ export function LoginForm() {
     try {
       const res = await fetch(
         // "https://issues-deployment-tracker-backend.onrender.com/api/auth/register",
-        // "http://localhost:8080/IssuesandDeploymentTracker/api/auth/register",
-        "/api/proxy/auth/register",
+        "http://localhost:8080/IssuesandDeploymentTracker/api/auth/register",
+        // "/api/proxy/auth/register",
         {
           method: "POST",
           headers: { "Content-type": "application/json" },
@@ -63,11 +63,12 @@ export function LoginForm() {
       const data = await res.json();
       if (!res.ok) {
         console.log(data.message || "Registration failed.");
+        alert("Registration failed!");
+      } else {
+        console.log(data);
+        alert("Registration successful!");
+        setIsLogin(true);
       }
-
-      console.log(data);
-      alert("Registration successful!");
-      setIsLogin(true);
     } catch (error) {
       alert("An error occured....");
       console.log(error);
@@ -81,8 +82,8 @@ export function LoginForm() {
     try {
       const res = await fetch(
         // "https://issues-deployment-tracker-backend.onrender.com/api/auth/login",
-        //  "http://localhost:8080/IssuesandDeploymentTracker/api/auth/login",
-        "/api/proxy/auth/register",
+        "http://localhost:8080/IssuesandDeploymentTracker/api/auth/login",
+        // "/api/proxy/auth/register",
         {
           method: "POST",
           headers: {
@@ -92,17 +93,17 @@ export function LoginForm() {
             email: (formData.get("email") as string)?.trim(),
             password: (formData.get("password") as string)?.trim(),
           }),
+          credentials: "include", 
         }
       );
       const data = await res.json();
       if (!res.ok) {
         console.log(data.message || "Login failed.");
+        alert("Login Failed");
+      } else {
+        alert("Login successful!");
+        router.push("/");
       }
-
-      Cookies.set("token", data.token, { expires: 7 });
-      console.log("JWT Token:", data.token);
-      alert("Login successful!");
-      router.push("/");
     } catch (error) {
       console.log(error || "An error Occured...");
     }

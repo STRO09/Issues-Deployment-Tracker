@@ -23,8 +23,8 @@ public class UserImplementor implements UserDAO {
 		try {
 			session = HibernateUtil.getSession();
 			transaction = session.beginTransaction();
-			User existingUser = session.createQuery("FROM User u WHERE u.id = :id", User.class)
-					.setParameter("id", user.getId()).uniqueResult();
+			User existingUser = session.createQuery("FROM User u WHERE u.email = :email", User.class)
+					.setParameter("email", user.getEmail()).uniqueResult();
 
 			if (existingUser == null) {
 				session.persist(user);

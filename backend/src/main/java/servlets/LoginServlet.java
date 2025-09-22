@@ -91,10 +91,22 @@ public class LoginServlet extends HttpServlet {
 	                  .setExpiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000)) // 24h
 	                  .signWith(SignatureAlgorithm.HS256, key)
 	                  .compact();
-			
+			  
+			// create the cookie
+			  javax.servlet.http.Cookie jwtCookie = new javax.servlet.http.Cookie("token", jwt);
+			  jwtCookie.setHttpOnly(true);        // prevents JS access
+			  jwtCookie.setSecure(false);          // true if using HTTPS
+			  jwtCookie.setPath("/");              // send cookie for entire site
+			  jwtCookie.setMaxAge(24 * 60 * 60);  // 1 day in seconds
+
+			// add cookie to response
+			  response.addCookie(jwtCookie);
 			  
 			  response.setStatus(HttpServletResponse.SC_OK);
-	          response.getWriter().write("{\"token\":\"" + jwt + "\"}");
+			  response.setContentType("application/json");
+			  response.getWriter().write("{\"message\":\"Login successful\",\"username\":\"" 
+			      + fetcheduser.getUsername() + "\",\"role\":\"" 
+			      + (fetcheduser.getRole() != null ? fetcheduser.getRole() : "") + "\"}");
 		}
 		catch (Exception e) {
 			// TODO: handle exception
