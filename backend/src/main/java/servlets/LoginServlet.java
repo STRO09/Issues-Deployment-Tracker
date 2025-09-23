@@ -61,7 +61,7 @@ public class LoginServlet extends HttpServlet {
 			
 			if (!fetcheduserdata.isPresent()) {
 	            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-	            response.getWriter().write("{\"message\":\"Invalid email or password\"}");
+	            response.getWriter().write("{\"message\":\"Invalid email\"}");
 	            return;
 	        }
 			
@@ -70,7 +70,7 @@ public class LoginServlet extends HttpServlet {
 			
 			if(!BCrypt.checkpw(logindata.getPassword(), fetcheduser.getPassword() )) {
 	            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-	            response.getWriter().write("{\"message\":\"Invalid email or password\"}");
+	            response.getWriter().write("{\"message\":\"Invalid password\"}");
 				return;
 			}
 			

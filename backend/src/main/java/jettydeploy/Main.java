@@ -5,8 +5,10 @@ import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
+import filters.AuthFilter;
 import filters.CorsFilter;
 import servlets.RegisterServlet;
+import servlets.SessionValidateServlet;
 import servlets.LoginServlet;
 
 public class Main {
@@ -20,9 +22,11 @@ public class Main {
 		server.setHandler(context);
 
 		context.addFilter(new FilterHolder(new CorsFilter()), "/*", null);
+		context.addFilter(new FilterHolder(new AuthFilter()), "/*", null);
 		// 3. Register servlets
 		context.addServlet(new ServletHolder(new RegisterServlet()), "/api/auth/register");
 		context.addServlet(new ServletHolder(new LoginServlet()), "/api/auth/login");
+		context.addServlet(new ServletHolder(new SessionValidateServlet()), "/api/auth/validate");
 
 		// 4. Start the server
 		try {

@@ -38,7 +38,7 @@ export default function Home() {
   if (!user) return <p>Please log in.</p>;
 
   // render PendingRolePage if role not assigned
-  if (!user.role) return <PendingRolePage user={user} />;
+  if (user.role=="UNASSIGNED") return <PendingRolePage user={user} />;
 
   return <p>Welcome, {user.username}! Your role is: {user.role}</p>;
 }
