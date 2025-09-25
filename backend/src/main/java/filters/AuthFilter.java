@@ -21,45 +21,29 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
-/**
- * Servlet Filter implementation class AuthFilter
- */
 @WebFilter("/*")
 public class AuthFilter extends HttpFilter implements Filter {
 
-	/**
-	 * @see HttpFilter#HttpFilter()
-	 */
 	public AuthFilter() {
 		super();
 		System.out.println(">>> AuthFilter constructor loaded, class = " + this.getClass().getName());
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @see Filter#destroy()
-	 */
 	public void destroy() {
-		// TODO Auto-generated method stub
 	}
 
-	/**
-	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
-	 */
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
 			throws IOException, ServletException {
-		// TODO Auto-generated method stub
-		// place your code here
 
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
 
-		String path = request.getRequestURI(); // e.g., /IssuesandDeploymentTracker/api/auth/login
+		String path = request.getRequestURI();
 		System.out.println("AuthFilter hit for: " + request.getRequestURI());
 
 		// whitelist login & register
 		if (path.endsWith("/auth/login") || path.endsWith("/auth/register")) {
-			chain.doFilter(request, response); // allow
+			chain.doFilter(request, response); 
 			return;
 		}
 
@@ -81,25 +65,21 @@ public class AuthFilter extends HttpFilter implements Filter {
 			}
 
 			Properties properties = new Properties();
-            try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("db.properties")) {
-                properties.load(inputStream);
-            }
-            String SECRET_KEY = properties.getProperty("jwt.SECRET_KEY");
+			try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("db.properties")) {
+				properties.load(inputStream);
+			}
+			String SECRET_KEY = properties.getProperty("jwt.SECRET_KEY");
 
-            Claims claims = Jwts.parser()
-                                .setSigningKey(Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8)))
-                                .build()
-                                .parseClaimsJws(token)
-                                .getBody();
-            
-            
-            request.setAttribute("userId", claims.getSubject());
-            request.setAttribute("username", claims.get("username"));
-            request.setAttribute("role", claims.get("role"));
-            
+			Claims claims = Jwts.parser().setSigningKey(Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8)))
+					.build().parseClaimsJws(token).getBody();
+
+			request.setAttribute("userId", claims.getSubject());
+			request.setAttribute("username", claims.get("username"));
+			request.setAttribute("role", claims.get("role"));
+
 			// pass the request along the filter chain
 			chain.doFilter(req, resp);
-			
+
 		} catch (Exception e) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			response.getWriter().write("{\"message\":\"Invalid token\"}");

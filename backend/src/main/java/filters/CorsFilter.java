@@ -12,31 +12,19 @@ import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet Filter implementation class CorsFilter
- */
 @WebFilter("/*")
 public class CorsFilter implements Filter {
 
-	/**
-	 * @see HttpFilter#HttpFilter()
-	 */
 	public CorsFilter() {
 		super();
 		System.out.println(">>> CorsFilter constructor loaded, class = " + this.getClass().getName());
-		// TODO Auto-generated constructor stub
+		
 	}
 
-	/** 
-	 * @see Filter#destroy()
-	 */
 	public void destroy() {
 		// TODO Auto-generated method stub
 	}
 
-	/**
-	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
-	 */
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
 			throws IOException, ServletException {
 		// TODO Auto-generated method stub

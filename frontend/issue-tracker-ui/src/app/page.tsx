@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { PendingRolePage } from "./pending-page/page";
 import { User } from "@/types/user";
+import { AdminDashboard } from "./admin/page";
 
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
@@ -45,10 +46,6 @@ export default function Home() {
 
   // render PendingRolePage if role not assigned
   if (user.role == "UNASSIGNED") return <PendingRolePage user={user} />;
-
-  return (
-    <p>
-      Welcome, {user.username}! Your role is: {user.role}
-    </p>
-  );
+  if (user.role == "ADMIN") return <AdminDashboard user = {user}/>;
+ 
 }
