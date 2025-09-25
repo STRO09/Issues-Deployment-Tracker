@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
-import Cookies from "js-cookie";
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false);

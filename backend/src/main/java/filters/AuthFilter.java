@@ -32,6 +32,7 @@ public class AuthFilter extends HttpFilter implements Filter {
 	 */
 	public AuthFilter() {
 		super();
+		System.out.println(">>> AuthFilter constructor loaded, class = " + this.getClass().getName());
 		// TODO Auto-generated constructor stub
 	}
 
@@ -54,6 +55,7 @@ public class AuthFilter extends HttpFilter implements Filter {
 		HttpServletResponse response = (HttpServletResponse) resp;
 
 		String path = request.getRequestURI(); // e.g., /IssuesandDeploymentTracker/api/auth/login
+		System.out.println("AuthFilter hit for: " + request.getRequestURI());
 
 		// whitelist login & register
 		if (path.endsWith("/auth/login") || path.endsWith("/auth/register")) {

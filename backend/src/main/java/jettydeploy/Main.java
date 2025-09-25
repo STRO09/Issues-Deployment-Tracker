@@ -10,6 +10,7 @@ import filters.CorsFilter;
 import servlets.RegisterServlet;
 import servlets.SessionValidateServlet;
 import servlets.LoginServlet;
+import servlets.LogoutServlet;
 
 public class Main {
 	public static void main(String[] args) throws Exception {
@@ -21,12 +22,13 @@ public class Main {
 		context.setContextPath("/IssuesandDeploymentTracker"); // base path
 		server.setHandler(context);
 
+		// 3. Register servlets & Filters
 		context.addFilter(new FilterHolder(new CorsFilter()), "/*", null);
 		context.addFilter(new FilterHolder(new AuthFilter()), "/*", null);
-		// 3. Register servlets
 		context.addServlet(new ServletHolder(new RegisterServlet()), "/api/auth/register");
 		context.addServlet(new ServletHolder(new LoginServlet()), "/api/auth/login");
 		context.addServlet(new ServletHolder(new SessionValidateServlet()), "/api/auth/validate");
+		context.addServlet(new ServletHolder(new LogoutServlet()), "/api/auth/logout");
 
 		// 4. Start the server
 		try {

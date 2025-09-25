@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { PendingRolePage } from "./pending-page/page";
 import { User } from "@/types/user";
 
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchUser() {
@@ -19,13 +21,17 @@ export default function Home() {
           }
         );
 
-        if (!res.ok) throw new Error("Not logged in");
-
+        if (!res.ok) {
+          setUser(null);
+          router.push("/auth");
+          return;
+        }
         const data = await res.json();
         setUser(data);
       } catch (err) {
         console.error(err);
         setUser(null);
+        router.push("/auth");
       } finally {
         setLoading(false);
       }
@@ -38,7 +44,11 @@ export default function Home() {
   if (!user) return <p>Please log in.</p>;
 
   // render PendingRolePage if role not assigned
-  if (user.role=="UNASSIGNED") return <PendingRolePage user={user} />;
+  if (user.role == "UNASSIGNED") return <PendingRolePage user={user} />;
 
-  return <p>Welcome, {user.username}! Your role is: {user.role}</p>;
+  return (
+    <p>
+      Welcome, {user.username}! Your role is: {user.role}
+    </p>
+  );
 }
