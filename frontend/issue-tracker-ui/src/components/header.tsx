@@ -10,9 +10,10 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { LogOut, Triangle } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { User } from "@/types/user";
 
 interface HeaderProps {
-  user: any;
+  user: User;
 }
 
 export function Header({ user }: HeaderProps) {

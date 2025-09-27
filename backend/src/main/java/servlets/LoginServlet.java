@@ -86,6 +86,7 @@ public class LoginServlet extends HttpServlet {
 			  String jwt = Jwts.builder()
 	                  .setSubject(String.valueOf(fetcheduser.getId()))
 	                  .claim("fullName", fetcheduser.getFullName())
+	                  .claim("email", fetcheduser.getEmail())
 	                  .claim("role", fetcheduser.getRole() != null ? fetcheduser.getRole().toString() : "UNASSIGNED")
 	                  .setIssuedAt(new Date())
 	                  .setExpiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000)) // 24h
