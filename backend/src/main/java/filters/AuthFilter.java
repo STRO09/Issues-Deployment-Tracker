@@ -73,8 +73,9 @@ public class AuthFilter extends HttpFilter implements Filter {
 			Claims claims = Jwts.parser().setSigningKey(Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8)))
 					.build().parseClaimsJws(token).getBody();
 
-			request.setAttribute("userId", claims.getSubject());
-			request.setAttribute("username", claims.get("username"));
+			request.setAttribute("id", claims.getSubject());
+			request.setAttribute("fullName", claims.get("fullName"));
+			request.setAttribute("email", claims.get("email"));
 			request.setAttribute("role", claims.get("role"));
 
 			// pass the request along the filter chain

@@ -51,7 +51,7 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
     {
       id: 1,
       email: "admin@company.com",
-      fullname: "Admin User",
+      fullName: "Admin User",
       role: UserRole.ADMIN,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -59,7 +59,7 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
     {
       id: 2,
       email: "pm@company.com",
-      fullname: "Project Manager",
+      fullName: "Project Manager",
       role: UserRole.PROJECT_MANAGER,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -67,7 +67,7 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
     {
       id: 3,
       email: "dev@company.com",
-      fullname: "Developer",
+      fullName: "Developer",
       role: UserRole.DEVELOPER,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -75,7 +75,7 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
     {
       id: 4,
       email: "tester@company.com",
-      fullname: "Tester",
+      fullName: "Tester",
       role: UserRole.TESTER,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -83,7 +83,7 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
     {
       id: 5,
       email: "newuser@company.com",
-      fullname: "New User",
+      fullName: "New User",
       role: UserRole.NONE,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -204,11 +204,11 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
 
   const getUserName = (userId: number) => {
     const user = users.find((u) => u.id === userId);
-    return user?.fullname || "Unknown User";
+    return user?.fullName || "Unknown User";
   };
 
   return (
-    <DashboardLayout>
+    <DashboardLayout user={user}>
       <div className="p-6 space-y-6">
         <div>
           <h1 className="text-3xl font-bold text-balance">Admin Dashboard</h1>
@@ -316,11 +316,11 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
                         <div className="flex items-center gap-3">
                           <Avatar className="h-8 w-8">
                             <AvatarFallback className="bg-primary text-primary-foreground text-xs">
-                              {user.fullname.charAt(0)}
+                              {user.fullName.charAt(0)}
                             </AvatarFallback>
                           </Avatar>
                           <div>
-                            <div className="font-medium">{user.fullname}</div>
+                            <div className="font-medium">{user.fullName}</div>
                             <div className="text-sm text-muted-foreground">
                               {user.email}
                             </div>

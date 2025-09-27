@@ -2,10 +2,11 @@
 "use client";
 
 import { ReactNode } from "react";
+import { useState } from "react";
 import { Sidebar } from "./sidebar";
 import { Header } from "./header";
 import { User } from "@/types/user";
-import { Role as UserRole } from "@/types/Role";
+
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -13,15 +14,18 @@ interface DashboardLayoutProps {
 } 
 
 export default function DashboardLayout( { children, user }: DashboardLayoutProps ) {
+
+  const [activeTab, setActiveTab] = useState("dashboard");
+
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
       {/* <Sidebar  userRole={user.role} activeTab={activeTab} onTabChange={setActiveTab}  /> */}
-      <Sidebar userRole={UserRole}/>
+      <Sidebar userRole={user.role} activeTab={activeTab} onTabChange={setActiveTab}/>
 
       <div className="flex flex-1 flex-col">
         {/* Header */}
-        <Header user={user} onUserChange={handleUserChange} />
+        <Header user={user} />
 
 
         {/* Main page content */}

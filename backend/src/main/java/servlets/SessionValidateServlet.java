@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import dtos.UserDTO;
+
 /**
  * Servlet implementation class SessionValidateServlet
  */
@@ -33,13 +35,14 @@ public class SessionValidateServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		ObjectMapper mapper = new ObjectMapper();
-        Map<String, String> userInfo = new HashMap<>();
-        userInfo.put("id", (String) request.getAttribute("userId"));
-        userInfo.put("username", (String) request.getAttribute("username"));
-        userInfo.put("role", (String) request.getAttribute("role"));
+        UserDTO userInfo = new UserDTO();
+        userInfo.setId(Integer.parseInt((String) request.getAttribute("id")));
+        userInfo.setFullname((String) request.getAttribute("fullName"));
+        userInfo.setEmail((String) request.getAttribute("email")); // add if available
+        userInfo.setRole((String) request.getAttribute("role"));
 
         response.setContentType("application/json");
-        response.getWriter().write(mapper.writeValueAsString(userInfo));
+        mapper.writeValue(response.getWriter(), userInfo);
 	}
 
 	/**

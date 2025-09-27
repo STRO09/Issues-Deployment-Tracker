@@ -85,7 +85,7 @@ public class LoginServlet extends HttpServlet {
 			
 			  String jwt = Jwts.builder()
 	                  .setSubject(String.valueOf(fetcheduser.getId()))
-	                  .claim("username", fetcheduser.getUsername() != null ? fetcheduser.getUsername().toString() : "UNASSIGNED")
+	                  .claim("fullName", fetcheduser.getFullName())
 	                  .claim("role", fetcheduser.getRole() != null ? fetcheduser.getRole().toString() : "UNASSIGNED")
 	                  .setIssuedAt(new Date())
 	                  .setExpiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000)) // 24h
@@ -104,8 +104,9 @@ public class LoginServlet extends HttpServlet {
 			  
 			  response.setStatus(HttpServletResponse.SC_OK);
 			  response.setContentType("application/json");
-			  response.getWriter().write("{\"message\":\"Login successful\",\"username\":\"" 
-			      + fetcheduser.getUsername() + "\",\"role\":\"" 
+			  response.getWriter().write("{\"message\":\"Login successful\",\"fullName\":\"" 
+			      + fetcheduser.getFullName() + "\",\"email\":\""
+			    		  + fetcheduser.getEmail() + "\",\"role\":\""
 			      + (fetcheduser.getRole() != null ? fetcheduser.getRole() : "") + "\"}");
 		}
 		catch (Exception e) {
