@@ -118,7 +118,7 @@ export function PendingRolePage({ user }: PendingRolePageProps) {
           </div>
           <div>
             <h1 className="text-3xl font-bold text-balance">
-              Welcome, {user.fullname}!
+              Welcome, {user.fullName} !
             </h1>
             <p className="text-lg text-muted-foreground mt-2 text-pretty">
               Your role is not assigned yet. Please request a role to access the

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
+import { RegisterUser, LoginUser } from "@/lib/api/auth";
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false);
@@ -35,8 +36,8 @@ export function LoginForm() {
   async function handleRegister(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const password = formData.get("pass");
-    const cpass = formData.get("cpass");
+    const password = formData.get("pass") as string;
+    const cpass = formData.get("cpass") as string;
 
     if (password != cpass) {
       alert("Passwords do not match.");
@@ -44,67 +45,31 @@ export function LoginForm() {
     }
 
     try {
-      const res = await fetch(
-        // "https://issues-deployment-tracker-backend.onrender.com/api/auth/register",
-        "http://localhost:8080/IssuesandDeploymentTracker/api/auth/register",
-        // "/api/proxy/auth/register",
-        {
-          method: "POST",
-          headers: { "Content-type": "application/json" },
-          body: JSON.stringify({
-            fullName: (formData.get("name") as string)?.trim(),
-            email: (formData.get("mail") as string)?.trim(),
-            password: (formData.get("pass") as string)?.trim(),
-          }),
-        }
+      const data = await RegisterUser(
+        (formData.get("name") as string).trim(),
+        (formData.get("mail") as string).trim(),
+        password.trim()
       );
-
-      const data = await res.json();
-      if (!res.ok) {
-        console.log(data.message || "Registration failed.");
-        alert("Registration failed!");
-      } else {
-        console.log(data);
-        alert("Registration successful!");
-        setIsLogin(true);
-      }
-    } catch (error) {
-      alert("An error occured....");
-      console.log(error);
+      alert("Registration successful!");
+      setIsLogin(true);
+      console.log(data);
+    } catch (err: any) {
+      alert(err.message);
     }
   }
 
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-
+    const email = (formData.get("email") as string)?.trim();
+    const password = (formData.get("password") as string)?.trim();
     try {
-      const res = await fetch(
-        // "https://issues-deployment-tracker-backend.onrender.com/api/auth/login",
-        "http://localhost:8080/IssuesandDeploymentTracker/api/auth/login",
-        // "/api/proxy/auth/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: (formData.get("email") as string)?.trim(),
-            password: (formData.get("password") as string)?.trim(),
-          }),
-          credentials: "include", 
-        }
-      );
-      const data = await res.json();
-      if (!res.ok) {
-        console.log(data.message || "Login failed.");
-        alert("Login Failed");
-      } else {
-        alert("Login successful!");
-        router.push("/");
-      }
-    } catch (error) {
-      console.log(error || "An error Occured...");
+      const data = await LoginUser(email, password);
+      alert("Login successful!");
+      router.push("/");
+      console.log(data);
+    } catch (error: any) {
+      alert(error.message || "An error Occured...");
     }
   }
 
@@ -115,11 +80,10 @@ export function LoginForm() {
         <motion.div
           animate={{ x: isLogin ? 0 : "100%" }}
           transition={{ duration: 0.5 }}
-          className="hidden md:flex    /* 🔴 hide completely on mobile */
-    absolute top-0 left-0 h-full w-1/2
-    bg-gradient-to-br from-indigo-500 to-purple-500
-    items-center justify-center text-white text-2xl font-bold
-  "
+          className="hidden md:flex    /* 🔴 hide completely on mobile */ 
+          absolute top-0 left-0 h-full w-1/2
+          bg-gradient-to-br from-indigo-500 to-purple-500
+          items-center justify-center text-white text-2xl font-bold"
         >
           {isLogin ? "Welcome Back!" : "Join Us Today!"}
         </motion.div>
@@ -129,9 +93,8 @@ export function LoginForm() {
           animate={{ x: isMobile ? 0 : isLogin ? "100%" : 0 }}
           transition={{ duration: 0.5 }}
           className="relative w-full right-0  /* 🔴 full width on mobile */
-    md:absolute md:top-0 md:left-0 md:h-full md:w-1/2
-    flex items-center justify-center p-10
-  "
+          md:absolute md:top-0 md:left-0 md:h-full md:w-1/2
+          flex items-center justify-center p-10"
         >
           <AnimatePresence mode="wait">
             {!animating && (
