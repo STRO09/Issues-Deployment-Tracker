@@ -36,7 +36,7 @@ public class SessionValidateServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		ObjectMapper mapper = new ObjectMapper();
         UserDTO userInfo = new UserDTO();
-        userInfo.setId(Integer.parseInt((String) request.getAttribute("id")));
+        userInfo.setId(Long.parseLong((String) request.getAttribute("id")));
         userInfo.setFullName((String) request.getAttribute("fullName"));
         userInfo.setEmail((String) request.getAttribute("email")); // add if available
         userInfo.setRole((String) request.getAttribute("role"));

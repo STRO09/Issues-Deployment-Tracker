@@ -10,7 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -21,7 +20,8 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { User } from "@/types/user";
 import { Role } from "@/types/Role";
-import { UserX, Send, Clock, CheckCircle, XCircle } from "lucide-react";
+import { UserX, Send, Clock, CheckCircle } from "lucide-react";
+import { logoutUser } from "@/lib/api/auth";
 
 interface PendingRolePageProps {
   user: User;
@@ -72,30 +72,15 @@ export function PendingRolePage({ user }: PendingRolePageProps) {
     setTimeout(() => setSubmitSuccess(false), 3000);
   };
 
-  // Example logout handler
   async function handleLogout() {
     try {
-      const res = await fetch(
-        "http://localhost:8080/IssuesandDeploymentTracker/api/auth/logout",
-        {
-          method: "POST",
-          credentials: "include", // send cookies
-        }
-      );
-
-      if (res.ok) {
-        // Optional: clear any client state
-        localStorage.clear();
-        sessionStorage.clear();
-
-        router.push("/auth");
-      } else {
-        console.error("Logout failed");
-      }
-    } catch (err) {
+      await logoutUser();
+      router.push("/auth");
+    } catch (err: any) {
       console.error("Logout error", err);
+      alert(err.message || "Logout failed");
     }
-  } // optional if you maintain server-side blacklist
+  }
 
   return (
     <div className="relative">

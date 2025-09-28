@@ -9,6 +9,7 @@ import filters.AuthFilter;
 import filters.CorsFilter;
 import servlets.RegisterServlet;
 import servlets.SessionValidateServlet;
+import servlets.UserServlet;
 import servlets.LoginServlet;
 import servlets.LogoutServlet;
 
@@ -27,6 +28,7 @@ public class Main {
 		context.addFilter(new FilterHolder(new AuthFilter()), "/*", null);
 		context.addServlet(new ServletHolder(new RegisterServlet()), "/api/auth/register");
 		context.addServlet(new ServletHolder(new LoginServlet()), "/api/auth/login");
+		context.addServlet(new ServletHolder(new UserServlet()), "/api/users/*");
 		context.addServlet(new ServletHolder(new SessionValidateServlet()), "/api/auth/validate");
 		context.addServlet(new ServletHolder(new LogoutServlet()), "/api/auth/logout");
 

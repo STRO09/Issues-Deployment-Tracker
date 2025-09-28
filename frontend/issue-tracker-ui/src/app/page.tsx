@@ -5,39 +5,27 @@ import { useRouter } from "next/navigation";
 import { PendingRolePage } from "./pending-page/page";
 import { User } from "@/types/user";
 import { AdminDashboard } from "./admin/page";
+import { validateUser } from "@/lib/api/auth";
 
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  useEffect(() => {
-    async function fetchUser() {
-      try {
-        const res = await fetch(
-          "http://localhost:8080/IssuesandDeploymentTracker/api/auth/validate", // new endpoint
-          {
-            method: "GET",
-            credentials: "include", // send cookie automatically
-          }
-        );
-
-        if (!res.ok) {
-          setUser(null);
-          router.push("/auth");
-          return;
-        }
-        const data = await res.json();
-        setUser(data);
-      } catch (err) {
-        console.error(err);
-        setUser(null);
-        router.push("/auth");
-      } finally {
-        setLoading(false);
-      }
+  async function fetchUser() {
+    try {
+      const data = await validateUser();
+      setUser(data);
+    } catch (err: any) {
+      console.log(err.message);
+      setUser(null);
+      router.push("/auth");
+    } finally {
+      setLoading(false);
     }
+  }
 
+  useEffect(() => {
     fetchUser();
   }, []);
 
@@ -46,6 +34,5 @@ export default function Home() {
 
   // render PendingRolePage if role not assigned
   if (user.role == "UNASSIGNED") return <PendingRolePage user={user} />;
-  if (user.role == "ADMIN") return <AdminDashboard user = {user}/>;
- 
+  if (user.role == "ADMIN") return <AdminDashboard user={user} />;
 }

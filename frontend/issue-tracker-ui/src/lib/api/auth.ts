@@ -34,3 +34,33 @@ export async function LoginUser(email: string, password: string) {
   }
   return data;
 }
+
+export async function validateUser() {
+  const res = await fetch(`${BASE_URL}/api/auth/validate`, {
+    method: "GET",
+    credentials: "include", // send cookie automatically
+  });
+
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.message || "Validation failed");
+  }
+  return data;
+}
+
+export async function logoutUser() {
+  const res = await fetch(`${BASE_URL}/api/auth/logout`, {
+    method: "POST",
+    credentials: "include", // send cookies
+  });
+
+  const data = await res.json();
+  if (res.ok) {
+    // Optional: clear any client state
+    localStorage.clear();
+    sessionStorage.clear();
+  } else {
+    throw new Error(data.message || "Logout Error");
+  }
+  return data;
+}

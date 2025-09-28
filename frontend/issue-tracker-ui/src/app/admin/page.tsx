@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -8,7 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -36,10 +35,9 @@ import {
   Bug,
   Rocket,
   CheckCircle,
-  XCircle,
-  Clock,
 } from "lucide-react";
 import DashboardLayout from "@/components/DashboardLayout";
+import { fetchUsers } from "@/lib/api/users";
 
 interface AdminDashboardProps {
   user: User;
@@ -90,26 +88,6 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
     },
   ]);
 
-  //   const [roleRequests, setRoleRequests] = useState<RoleRequest[]>([
-  //     {
-  //       id: "1",
-  //       userId: "5",
-  //       requestedRole: "DEVELOPER",
-  //       reason: "I have 3 years of experience in React and Node.js development.",
-  //       status: "PENDING",
-  //       createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-  //     },
-  //     {
-  //       id: "2",
-  //       userId: "6",
-  //       requestedRole: "TESTER",
-  //       reason:
-  //         "I have experience in manual and automated testing with Cypress and Jest.",
-  //       status: "PENDING",
-  //       createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-  //     },
-  //   ]);
-
   const [successMessage, setSuccessMessage] = useState("");
 
   const handleRoleChange = (userId: number, newRole: UserRole) => {
@@ -123,46 +101,6 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
     setSuccessMessage(`User role updated successfully`);
     setTimeout(() => setSuccessMessage(""), 3000);
   };
-
-  //   const handleRoleRequest = (
-  //     requestId: string,
-  //     action: "APPROVED" | "REJECTED"
-  //   ) => {
-  //     const request = roleRequests.find((r) => r.id === requestId);
-  //     if (!request) return;
-
-  //     if (action === "APPROVED") {
-  //       // Update user role
-  //       setUsers(
-  //         users.map((u) =>
-  //           u.id === request.userId
-  //             ? {
-  //                 ...u,
-  //                 role: request.requestedRole,
-  //                 updatedAt: new Date().toISOString(),
-  //               }
-  //             : u
-  //         )
-  //       );
-  //     }
-
-  //     // Update request status
-  //     setRoleRequests(
-  //       roleRequests.map((r) =>
-  //         r.id === requestId
-  //           ? {
-  //               ...r,
-  //               status: action,
-  //               reviewedBy: user.id,
-  //               reviewedAt: new Date().toISOString(),
-  //             }
-  //           : r
-  //       )
-  //     );
-
-  //     setSuccessMessage(`Role request ${action.toLowerCase()} successfully`);
-  //     setTimeout(() => setSuccessMessage(""), 3000);
-  //   };
 
   const getRoleColor = (role: UserRole) => {
     switch (role) {
@@ -181,19 +119,6 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
     }
   };
 
-  //   const getStatusIcon = (status: string) => {
-  //     switch (status) {
-  //       case "PENDING":
-  //         return <Clock className="h-4 w-4 text-yellow-500" />;
-  //       case "APPROVED":
-  //         return <CheckCircle className="h-4 w-4 text-green-500" />;
-  //       case "REJECTED":
-  //         return <XCircle className="h-4 w-4 text-red-500" />;
-  //       default:
-  //         return null;
-  //     }
-  //   };
-
   // Calculate stats
   const stats = {
     totalUsers: users.length,
@@ -202,10 +127,19 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
     deployments: 15, // Mock data
   };
 
-  const getUserName = (userId: number) => {
-    const user = users.find((u) => u.id === userId);
-    return user?.fullName || "Unknown User";
-  };
+  useEffect(() => {
+    async function loadUsers() {
+      try {
+        const data = await fetchUsers();
+        setUsers(prev => [...prev,...data]);
+
+      } catch (err: any) {
+        console.log(err.message, "Failed to fetch Users");
+      }
+    }
+
+    loadUsers();
+  }, []);
 
   return (
     <DashboardLayout user={user}>
