@@ -40,9 +40,10 @@ public class AuthFilter extends HttpFilter implements Filter {
 
 		String path = request.getRequestURI();
 		System.out.println("AuthFilter hit for: " + request.getRequestURI());
+		System.out.println(path);
 
 		// whitelist login & register
-		if (path.endsWith("/auth/login") || path.endsWith("/auth/register")) {
+		if (path.endsWith("/api/auth/login") || path.endsWith("/api/auth/register")) {
 			chain.doFilter(request, response); 
 			return;
 		}
@@ -70,18 +71,24 @@ public class AuthFilter extends HttpFilter implements Filter {
 			}
 			String SECRET_KEY = properties.getProperty("jwt.SECRET_KEY");
 
+			System.out.println(">>> Path: " + path);
+			System.out.println(">>> Token (first 20 chars): " + token.substring(0, 20));
+			System.out.println(">>> SECRET_KEY (length): " + (SECRET_KEY == null ? "null" : SECRET_KEY.length()));
+			System.out.println(">>> SECRET_KEY (raw): '" + SECRET_KEY + "'");
+
 			Claims claims = Jwts.parser().setSigningKey(Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8)))
 					.build().parseClaimsJws(token).getBody();
 
 			request.setAttribute("id", claims.getSubject());
-			request.setAttribute("fullName", claims.get("fullName"));
-			request.setAttribute("email", claims.get("email"));
-			request.setAttribute("role", claims.get("role"));
+			request.setAttribute("fullName", (String) claims.get("fullName"));
+			request.setAttribute("email", (String) claims.get("email"));
+			request.setAttribute("role", (String) claims.get("role"));
 
 			// pass the request along the filter chain
 			chain.doFilter(req, resp);
 
 		} catch (Exception e) {
+			System.out.print(e);
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			response.getWriter().write("{\"message\":\"Invalid token\"}");
 		}

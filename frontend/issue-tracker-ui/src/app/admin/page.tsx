@@ -70,22 +70,7 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     },
-    {
-      id: 4,
-      email: "tester@company.com",
-      fullName: "Tester",
-      role: UserRole.TESTER,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-    {
-      id: 5,
-      email: "newuser@company.com",
-      fullName: "New User",
-      role: UserRole.NONE,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
+
   ]);
 
   const [successMessage, setSuccessMessage] = useState("");
