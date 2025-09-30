@@ -45,39 +45,13 @@ interface AdminDashboardProps {
 
 export function AdminDashboard({ user }: AdminDashboardProps) {
   // Mock data for demo
-  const [users, setUsers] = useState<User[]>([
-    {
-      id: 1,
-      email: "admin@company.com",
-      fullName: "Admin User",
-      role: UserRole.ADMIN,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-    {
-      id: 2,
-      email: "pm@company.com",
-      fullName: "Project Manager",
-      role: UserRole.PROJECT_MANAGER,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-    {
-      id: 3,
-      email: "dev@company.com",
-      fullName: "Developer",
-      role: UserRole.DEVELOPER,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-
-  ]);
+  const [users, setUsers] = useState<User[]>();
 
   const [successMessage, setSuccessMessage] = useState("");
 
   const handleRoleChange = (userId: number, newRole: UserRole) => {
     setUsers(
-      users.map((u) =>
+      users?.map((u) =>
         u.id === userId
           ? { ...u, role: newRole, updatedAt: new Date().toISOString() }
           : u
@@ -106,7 +80,7 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
 
   // Calculate stats
   const stats = {
-    totalUsers: users.length,
+    totalUsers: users?.length,
     totalProjects: 8, // Mock data
     activeIssues: 23, // Mock data
     deployments: 15, // Mock data
@@ -116,7 +90,7 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
     async function loadUsers() {
       try {
         const data = await fetchUsers();
-        setUsers(prev => [...prev,...data]);
+        setUsers(data);
 
       } catch (err: any) {
         console.log(err.message, "Failed to fetch Users");
@@ -229,7 +203,7 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {users.map((user) => (
+                  {users?.map((user) => (
                     <TableRow key={user.id}>
                       <TableCell>
                         <div className="flex items-center gap-3">
