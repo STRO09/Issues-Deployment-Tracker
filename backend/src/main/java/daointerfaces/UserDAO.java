@@ -25,4 +25,6 @@ public interface UserDAO {
 	public boolean deleteUser(Long id);
 
 	public User getUserById(Long id);
+	
+	public boolean changeRole(Long id, Role role);
 }

@@ -37,7 +37,7 @@ import {
   CheckCircle,
 } from "lucide-react";
 import DashboardLayout from "@/components/DashboardLayout";
-import { fetchUsers } from "@/lib/api/users";
+import { changeRole, fetchUsers } from "@/lib/api/users";
 
 interface AdminDashboardProps {
   user: User;
@@ -49,17 +49,26 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
 
   const [successMessage, setSuccessMessage] = useState("");
 
-  const handleRoleChange = (userId: number, newRole: UserRole) => {
-    setUsers(
-      users?.map((u) =>
-        u.id === userId
-          ? { ...u, role: newRole, updatedAt: new Date().toISOString() }
-          : u
-      )
-    );
-    setSuccessMessage(`User role updated successfully`);
-    setTimeout(() => setSuccessMessage(""), 3000);
-  };
+  async function loadUsers() {
+    try {
+      const data = await fetchUsers();
+      setUsers(data);
+    } catch (err: any) {
+      console.log(err.message, "Failed to fetch Users");
+    }
+  }
+  async function handleRoleChange(userId: number, newRole: UserRole) {
+    try {
+      const roleToSend = newRole === UserRole.NONE ? null : newRole;
+      await changeRole(userId, newRole);
+      alert("Role changed successfully");
+      setSuccessMessage(`User role updated successfully`);
+      await loadUsers();
+      setTimeout(() => setSuccessMessage(""), 3000);
+    } catch (err: any) {
+      alert(err.message || "An error occured while changing roles...");
+    }
+  }
 
   const getRoleColor = (role: UserRole) => {
     switch (role) {
@@ -87,16 +96,6 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
   };
 
   useEffect(() => {
-    async function loadUsers() {
-      try {
-        const data = await fetchUsers();
-        setUsers(data);
-
-      } catch (err: any) {
-        console.log(err.message, "Failed to fetch Users");
-      }
-    }
-
     loadUsers();
   }, []);
 

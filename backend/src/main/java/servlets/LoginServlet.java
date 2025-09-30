@@ -57,6 +57,8 @@ public class LoginServlet extends HttpServlet {
 		System.out.println("Login Servlet hit for Request Type: "+request.getMethod());
 		try {
 			ObjectMapper mapper = new ObjectMapper();
+//			mapper.registerModule(new JavaTimeModule());
+//			mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 			User logindata = mapper.readValue(request.getInputStream(), User.class);
 			Optional<User> fetcheduserdata =  userdao.findByEmail(logindata.getEmail());
 			

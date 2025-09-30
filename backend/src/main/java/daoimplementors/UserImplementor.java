@@ -17,7 +17,7 @@ public class UserImplementor implements UserDAO {
 	@Override
 	public boolean registerUser(User user) {
 		// TODO Auto-generated method stub
-    	boolean success ;
+		boolean success;
 		Transaction transaction = null;
 		Session session = null;
 		try {
@@ -36,7 +36,7 @@ public class UserImplementor implements UserDAO {
 				System.out.println("User with the same email already exists");
 			}
 		} catch (Exception e) {
-			success= false;
+			success = false;
 			if (transaction != null && transaction.isActive()) {
 				transaction.rollback();
 			}
@@ -156,7 +156,7 @@ public class UserImplementor implements UserDAO {
 	@Override
 	public boolean updateProfile(User user) {
 		// TODO Auto-generated method stub
-    	boolean success ;
+		boolean success;
 		Session session = null;
 		Transaction transaction = null;
 		try {
@@ -192,7 +192,7 @@ public class UserImplementor implements UserDAO {
 	@Override
 	public boolean deleteUser(Long id) {
 		// TODO Auto-generated method stub
-    	boolean success ;
+		boolean success;
 		Session session = null;
 		Transaction transaction = null;
 		try {
@@ -246,6 +246,43 @@ public class UserImplementor implements UserDAO {
 			}
 		}
 		return user;
+	}
+
+	@Override
+	public boolean changeRole(Long id, Role role) {
+		// TODO Auto-generated method stub
+		boolean success;
+		Session session = null;
+		Transaction transaction = null;
+		try {
+			session = HibernateUtil.getSession();
+			transaction = session.beginTransaction();
+			User existingUser = session.createQuery("FROM User u WHERE u.id = :id", User.class).setParameter("id", id)
+					.uniqueResult();
+
+			if (existingUser != null) {
+				existingUser.setRole(role);
+				session.merge(existingUser);
+				transaction.commit();
+				success = true;
+				System.out.println("User data updated successfully");
+			} else {
+				success = false;
+				System.out.println("No user with the provided id exists");
+			}
+
+		} catch (Exception e) {
+			success = false;
+			if (transaction != null && transaction.isActive()) {
+				transaction.rollback();
+			}
+			e.printStackTrace();
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+		return success;
 	}
 
 }
