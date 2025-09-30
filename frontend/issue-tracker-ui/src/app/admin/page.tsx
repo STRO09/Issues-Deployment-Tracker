@@ -35,6 +35,7 @@ import {
   Bug,
   Rocket,
   CheckCircle,
+  Clock,
 } from "lucide-react";
 import DashboardLayout from "@/components/DashboardLayout";
 import { changeRole, fetchUsers } from "@/lib/api/users";
@@ -90,7 +91,8 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
   // Calculate stats
   const stats = {
     totalUsers: users?.length,
-    totalProjects: 8, // Mock data
+    pendingRequests: users?.filter((u) => u.role == "UNASSIGNED").length,
+    totalProjects: 8, 
     activeIssues: 23, // Mock data
     deployments: 15, // Mock data
   };
@@ -142,7 +144,7 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
               <UserCheck className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              {/* <div className="text-2xl font-bold">{stats.pendingRequests}</div> */}
+              <div className="text-2xl font-bold">{stats.pendingRequests}</div>
               <p className="text-xs text-muted-foreground">Role assignments</p>
             </CardContent>
           </Card>
@@ -238,7 +240,7 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="NONE">None</SelectItem>
+                            <SelectItem value="UNASSIGNED">Unassigned</SelectItem>
                             <SelectItem value="DEVELOPER">Developer</SelectItem>
                             <SelectItem value="TESTER">Tester</SelectItem>
                             <SelectItem value="PROJECT_MANAGER">
@@ -260,77 +262,46 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
             <CardHeader>
               <CardTitle>Pending Role Requests</CardTitle>
               <CardDescription>
-                Review and approve role assignment requests
+                Review users with no assigned role
               </CardDescription>
             </CardHeader>
-            {/* <CardContent>
-            {roleRequests.filter((r) => r.status === "PENDING").length === 0 ? (
-              <div className="text-center py-8">
-                <div className="p-3 rounded-full bg-muted w-fit mx-auto mb-3">
-                  <UserCheck className="h-6 w-6 text-muted-foreground" />
+            <CardContent>
+              {users?.filter((u) => u.role == "UNASSIGNED").length === 0 ? (
+                <div className="text-center py-8">
+                  <div className="p-3 rounded-full bg-muted w-fit mx-auto mb-3">
+                    <UserCheck className="h-6 w-6 text-muted-foreground" />
+                  </div>
+                  <p className="text-muted-foreground">No pending requests</p>
                 </div>
-                <p className="text-muted-foreground">No pending requests</p>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {roleRequests
-                  .filter((r) => r.status === "PENDING")
-                  .map((request) => (
-                    <div
-                      key={request.id}
-                      className="border rounded-lg p-4 space-y-3"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <div className="font-medium">
-                            {getUserName(request.userId)}
+              ) : (
+                <div className="space-y-4">
+                  {users
+                    ?.filter((u) => u.role == "UNASSIGNED")
+                    .map((user) => (
+                      <div
+                        key={user.id}
+                        className="border rounded-lg p-4 space-y-3"
+                      >
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <div className="font-medium">{user.fullName}</div>
+                            <div className="text-sm text-muted-foreground">
+                              Email: {user.email}
+                            </div>
                           </div>
-                          <div className="text-sm text-muted-foreground">
-                            Requesting:{" "}
-                            {request.requestedRole.replace("_", " ")}
-                          </div>
+                          <Badge
+                            variant="outline"
+                            className="bg-yellow-500/10 text-yellow-500 border-yellow-500/20"
+                          >
+                            <Clock className="mr-1 h-3 w-3" />
+                            Pending
+                          </Badge>
                         </div>
-                        <Badge
-                          variant="outline"
-                          className="bg-yellow-500/10 text-yellow-500 border-yellow-500/20"
-                        >
-                          <Clock className="mr-1 h-3 w-3" />
-                          Pending
-                        </Badge>
                       </div>
-
-                      <p className="text-sm text-muted-foreground">
-                        {request.reason}
-                      </p>
-
-                      <div className="flex gap-2">
-                        <Button
-                          size="sm"
-                          onClick={() =>
-                            handleRoleRequest(request.id, "APPROVED")
-                          }
-                          className="bg-green-600 hover:bg-green-700"
-                        >
-                          <CheckCircle className="mr-1 h-3 w-3" />
-                          Approve
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() =>
-                            handleRoleRequest(request.id, "REJECTED")
-                          }
-                          className="border-red-500/20 text-red-500 hover:bg-red-500/10"
-                        >
-                          <XCircle className="mr-1 h-3 w-3" />
-                          Reject
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            )}
-          </CardContent> */}
+                    ))}
+                </div>
+              )}
+            </CardContent>
           </Card>
         </div>
 

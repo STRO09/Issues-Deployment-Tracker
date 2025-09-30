@@ -65,7 +65,7 @@ public class UserServlet extends HttpServlet {
 			List<User> users = userdao.findAll();
 			List<UserDTO> userDtos = users.stream()
 					.map(u -> new UserDTO(u.getId(), u.getFullName(), u.getEmail(),
-							(u.getRole() != null) ? u.getRole().toString() : "NONE", u.getCreatedAt(),
+							(u.getRole() != null) ? u.getRole().toString() : "UNASSIGNED", u.getCreatedAt(),
 							u.getUpdatedAt()))
 					.collect(Collectors.toList());
 			response.setContentType("application/json");
@@ -108,7 +108,7 @@ public class UserServlet extends HttpServlet {
 					Long id = Long.valueOf(body.get("id").toString());
 					Object roleObj = body.get("role");
 					Role role = null;
-					if (roleObj != null && !"NONE".equals(roleObj.toString())) {
+					if (roleObj != null && !"UNASSIGNED".equals(roleObj.toString())) {
 					    role = Role.valueOf(roleObj.toString());
 					}
 

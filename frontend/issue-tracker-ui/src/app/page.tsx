@@ -15,6 +15,7 @@ export default function Home() {
   async function fetchUser() {
     try {
       const data = await validateUser();
+      console.log(data);
       setUser(data);
     } catch (err: any) {
       console.log(err.message);
