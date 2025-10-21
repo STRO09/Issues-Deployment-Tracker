@@ -6,11 +6,12 @@ export interface Issue {
   id: number;
   title: string;
   description: string;
-  projectid: number;
+  projectId: number;
   status: Status;
   priority: Priority;
   createdBy: User;
   assignedTo: User;
   createdAt?: string;
   updatedAt?: string;
+  comments? : string[]
 }

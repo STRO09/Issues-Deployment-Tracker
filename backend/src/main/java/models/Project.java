@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -36,6 +38,10 @@ public class Project {
 	private LocalDateTime updatedAt;
 
 	// Relationships --------------------------
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "creator_id", nullable = false)
+	private User creator;
 
 	// One Project → Many Issues
 	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -64,9 +70,10 @@ public class Project {
 	public Project() {
 	}
 
-	public Project(String name, String description) {
+	public Project(String name, String description, User creator) {
 		this.name = name;
 		this.description = description;
+		this.creator = creator;
 	}
 
 	// Getters & Setters ----------------------

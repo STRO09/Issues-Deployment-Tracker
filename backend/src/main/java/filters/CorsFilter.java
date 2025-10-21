@@ -33,13 +33,6 @@ public class CorsFilter implements Filter {
 		HttpServletRequest request = (HttpServletRequest) req;
 		System.out.println("CorsFilter hit for: " + request.getRequestURI());
 //		String origin = req.getHeader("Origin");
-//		if (origin != null && origin.endsWith(".vercel.app")) {
-//			response.setHeader("Access-Control-Allow-Origin", origin);
-//		}
-//		else {
-//		    // fallback: allow your known frontend explicitly
-//		    response.setHeader("Access-Control-Allow-Origin", "https://issues-deployment-tracker.vercel.app");
-//		}
 
 //		 response.setHeader("Access-Control-Allow-Origin","https://issues-deployment-tracker.vercel.app");
 		response.setHeader("Access-Control-Allow-Origin","http://localhost:3000");

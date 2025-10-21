@@ -55,6 +55,10 @@ public class User {
 	}
 
 	// ===== Relationships =====
+	
+	// One Project → Many Issues
+	@OneToMany(mappedBy = "creator", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Project> projectsCreated;
 
 	// 1. Issues created by this user
 	@OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -6,6 +6,7 @@ import { PendingRolePage } from "./pending-page/page";
 import { User } from "@/types/user";
 import { AdminDashboard } from "./admin/page";
 import { validateUser } from "@/lib/api/auth";
+import { ProjectManagerDashboard } from "./projectmanager/page";
 
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
@@ -35,5 +36,6 @@ export default function Home() {
 
   // render PendingRolePage if role not assigned
   if (user.role == "UNASSIGNED") return <PendingRolePage user={user} />;
+  if(user.role == "PROJECT_MANAGER") return <ProjectManagerDashboard user={user} />;
   if (user.role == "ADMIN") return <AdminDashboard user={user} />;
 }
