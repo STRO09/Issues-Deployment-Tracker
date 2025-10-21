@@ -23,7 +23,7 @@ import javax.persistence.UniqueConstraint;
 public class User {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO) //maybe change it back to identity in prod
+	@GeneratedValue(strategy = GenerationType.AUTO) // maybe change it back to identity in prod
 	private Long id; // Primary Key
 //	private int id; // less space and better since its a smaller system
 
@@ -40,7 +40,7 @@ public class User {
 	private String fullName;
 
 	@Enumerated(EnumType.STRING)
-	@Column( length = 20)
+	@Column(length = 20)
 	private Role role; // ADMIN, DEV, TESTER, PM
 
 	@Column(nullable = false, updatable = false)
@@ -72,11 +72,16 @@ public class User {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProjectMember> projectMemberships;
 
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", email=" + email + ", password=" + password
-				+ ", fullName=" + fullName + ", role=" + role + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt
-				 + "]";
+	// ===== Lifecycle Callbacks =====
+	@PrePersist
+	protected void onCreate() {
+		createdAt = LocalDateTime.now();
+		updatedAt = LocalDateTime.now();
+	}
+
+	@PreUpdate
+	protected void onUpdate() {
+		updatedAt = LocalDateTime.now();
 	}
 
 	// ===== Constructors =====
@@ -89,18 +94,6 @@ public class User {
 		this.password = password;
 		this.fullName = fullName;
 		this.role = role;
-	}
-
-	// ===== Lifecycle Callbacks =====
-	@PrePersist
-	protected void onCreate() {
-		createdAt = LocalDateTime.now();
-		updatedAt = LocalDateTime.now();
-	}
-
-	@PreUpdate
-	protected void onUpdate() {
-		updatedAt = LocalDateTime.now();
 	}
 
 	// ===== Getters & Setters =====
@@ -154,5 +147,12 @@ public class User {
 
 	public LocalDateTime getUpdatedAt() {
 		return updatedAt;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", email=" + email + ", password=" + password
+				+ ", fullName=" + fullName + ", role=" + role + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt
+				+ "]";
 	}
 }

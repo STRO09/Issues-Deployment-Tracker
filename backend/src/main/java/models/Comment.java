@@ -42,23 +42,6 @@ public class Comment {
 	@JoinColumn(name = "author_id", nullable = false)
 	private User author;
 
-	// Constructors -----------------
-	public Comment() {
-	}
-
-	public Comment(String title, String content, Issue issue, User author) {
-		this.title = title;
-		this.content = content;
-		this.issue = issue;
-		this.author = author;
-	}
-
-	@Override
-	public String toString() {
-		return "Comment [id=" + id + ", content=" + content + ", createdAt=" + createdAt + ", issue=" + issue.getId()
-				+ ", author=" + author.getId() + "]";
-	}
-
 	// Lifecycle -----------------
 	@PrePersist
 	protected void onCreate() {
@@ -69,6 +52,17 @@ public class Comment {
 
 	public String getTitle() {
 		return title;
+	}
+
+	// Constructors -----------------
+	public Comment() {
+	}
+
+	public Comment(String title, String content, Issue issue, User author) {
+		this.title = title;
+		this.content = content;
+		this.issue = issue;
+		this.author = author;
 	}
 
 	public void setTitle(String title) {
@@ -106,4 +100,11 @@ public class Comment {
 	public void setAuthor(User author) {
 		this.author = author;
 	}
+
+	@Override
+	public String toString() {
+		return "Comment [id=" + id + ", content=" + content + ", createdAt=" + createdAt + ", issue=" + issue.getId()
+				+ ", author=" + author.getId() + "]";
+	}
+
 }

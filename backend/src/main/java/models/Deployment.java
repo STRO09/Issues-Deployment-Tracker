@@ -31,10 +31,10 @@ public class Deployment {
 
 	@Column(columnDefinition = "TEXT")
 	private String description; // release notes or summary
-	
+
 	@Column(columnDefinition = "TEXT")
 	private String url;
-	
+
 	@Column(nullable = false, updatable = false)
 	private LocalDateTime deployedAt;
 
@@ -55,12 +55,6 @@ public class Deployment {
 	private Set<Issue> issues = new HashSet<>();
 
 	// ---------------- CONSTRUCTORS ----------------
-
-	@Override
-	public String toString() {
-		return "Deployment [id=" + id + ", version=" + version + ", description=" + description + ", deployedAt="
-				+ deployedAt + ", project=" + project.getId() + "]";
-	}
 
 	public Deployment() {
 	}
@@ -120,5 +114,11 @@ public class Deployment {
 
 	public void setIssues(Set<Issue> issues) {
 		this.issues = issues;
+	}
+
+	@Override
+	public String toString() {
+		return "Deployment [id=" + id + ", version=" + version + ", description=" + description + ", deployedAt="
+				+ deployedAt + ", project=" + project.getId() + "]";
 	}
 }

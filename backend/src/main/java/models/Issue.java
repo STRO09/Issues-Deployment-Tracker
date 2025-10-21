@@ -65,16 +65,21 @@ public class Issue {
 	@JoinTable(name = "issue_deployments", joinColumns = @JoinColumn(name = "issue_id"), inverseJoinColumns = @JoinColumn(name = "deployment_id"))
 	private Set<Deployment> deployments = new HashSet<>();
 
+	@Column
 	private LocalDateTime createdAt;
+
+	@Column
 	private LocalDateTime updatedAt;
 
-	@Override
-	public String toString() {
-		return "Issue [id=" + id + ", title=" + title + ", description=" + description + ", priority=" + priority
-				+ ", status=" + status + ", projectId=" + (project != null ? project.getId() : null) + ", createdById="
-				+ (createdBy != null ? createdBy.getId() : null) + ", assignedToId="
-				+ (assignedTo != null ? assignedTo.getId() : null) + ", createdAt=" + createdAt + ", updatedAt="
-				+ updatedAt + "]";
+	@PrePersist
+	protected void onCreate() {
+		createdAt = LocalDateTime.now();
+		updatedAt = LocalDateTime.now();
+	}
+
+	@PreUpdate
+	protected void onUpdate() {
+		updatedAt = LocalDateTime.now();
 	}
 
 	// --- Enums ---
@@ -97,17 +102,6 @@ public class Issue {
 		this.status = status;
 		this.project = project;
 		this.createdBy = user;
-	}
-
-	@PrePersist
-	protected void onCreate() {
-		createdAt = LocalDateTime.now();
-		updatedAt = LocalDateTime.now();
-	}
-
-	@PreUpdate
-	protected void onUpdate() {
-		updatedAt = LocalDateTime.now();
 	}
 
 	// --- Getters & Setters ---
@@ -205,5 +199,14 @@ public class Issue {
 
 	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	@Override
+	public String toString() {
+		return "Issue [id=" + id + ", title=" + title + ", description=" + description + ", priority=" + priority
+				+ ", status=" + status + ", projectId=" + (project != null ? project.getId() : null) + ", createdById="
+				+ (createdBy != null ? createdBy.getId() : null) + ", assignedToId="
+				+ (assignedTo != null ? assignedTo.getId() : null) + ", createdAt=" + createdAt + ", updatedAt="
+				+ updatedAt + "]";
 	}
 }

@@ -42,12 +42,6 @@ public class ProjectMember implements Serializable {
 	@Column(nullable = false, updatable = false)
 	private java.time.LocalDateTime joinedAt;
 
-	@Override
-	public String toString() {
-		return "ProjectMember [id=" + id + ", project=" + project + ", user=" + user + ", projectRole=" + projectRole
-				+ ", joinedAt=" + joinedAt + "]";
-	}
-
 	// ===== Lifecycle Callbacks =====
 	@PrePersist
 	protected void onCreate() {
@@ -94,4 +88,11 @@ public class ProjectMember implements Serializable {
 	public void setJoinedAt(java.time.LocalDateTime joinedAt) {
 		this.joinedAt = joinedAt;
 	}
+
+	@Override
+	public String toString() {
+		return "ProjectMember [id=" + id + ", project=" + project + ", user=" + user + ", projectRole=" + projectRole
+				+ ", joinedAt=" + joinedAt + "]";
+	}
+
 }

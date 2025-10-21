@@ -23,10 +23,16 @@ public class HibernateUtil {
 
 		try {
 			String env = System.getenv("ENVIRONMENT"); // "test" or "prod"
-			String propsFile = "test".equals(env) ? "db-test.properties" : "db.properties";
+			String propsFile ;
+			switch(env) {
+		    case "test": propsFile = "db-test.properties"; break;
+		    case "prod": propsFile = "production_db.properties"; break;
+		    default: propsFile = "db.properties";
+		}
 
 			Properties properties = new Properties();
 			boolean loaded = false;
+			
 			if (propsFile != null) {
 				try (InputStream inputStream = HibernateUtil.class.getClassLoader().getResourceAsStream(propsFile)) {
 					if (inputStream == null) {

@@ -16,130 +16,128 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(
-    name = "projects",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"name"})
-    }
-)
+@Table(name = "projects", uniqueConstraints = { @UniqueConstraint(columnNames = { "name" }) })
 public class Project {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(nullable = false, unique = true, length = 150)
-    private String name;
+	@Column(nullable = false, unique = true, length = 150)
+	private String name;
 
-    @Column(columnDefinition = "TEXT")
-    private String description;
+	@Column(columnDefinition = "TEXT")
+	private String description;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
+	@Column(nullable = false)
+	private LocalDateTime createdAt;
 
-    private LocalDateTime updatedAt;
+	@Column
+	private LocalDateTime updatedAt;
 
-    // Relationships --------------------------
+	// Relationships --------------------------
 
-    // One Project → Many Issues
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Issue> issues;
+	// One Project → Many Issues
+	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Issue> issues;
 
-    // One Project → Many Deployments
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Deployment> deployments;
+	// One Project → Many Deployments
+	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Deployment> deployments;
 
-    // Many Projects ↔ Many Users (via ProjectMember)
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProjectMember> members;
+	// Many Projects ↔ Many Users (via ProjectMember)
+	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ProjectMember> members;
 
-    @Override
-	public String toString() {
-		return "Project [id=" + id + ", name=" + name + ", description=" + description + ", createdAt=" + createdAt
-				+ ", updatedAt=" + updatedAt  + "]";
+	// ===== Lifecycle Callbacks =====
+	@PrePersist
+	protected void onCreate() {
+		createdAt = LocalDateTime.now();
+	}
+
+	@PreUpdate
+	protected void onUpdate() {
+		updatedAt = LocalDateTime.now();
 	}
 
 	// Constructors ---------------------------
-    public Project() {}
+	public Project() {
+	}
 
-    public Project(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
-    
- // ===== Lifecycle Callbacks =====
- 	@PrePersist
- 	protected void onCreate() {
- 		createdAt = LocalDateTime.now();
- 	}
+	public Project(String name, String description) {
+		this.name = name;
+		this.description = description;
+	}
 
- 	@PreUpdate
- 	protected void onUpdate() {
- 		updatedAt = LocalDateTime.now();
- 	}
+	// Getters & Setters ----------------------
+	public Long getId() {
+		return id;
+	}
 
-    // Getters & Setters ----------------------
-    public Long getId() {
-        return id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
 
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
+	public List<Issue> getIssues() {
+		return issues;
+	}
 
-    public List<Issue> getIssues() {
-        return issues;
-    }
+	public void setIssues(List<Issue> issues) {
+		this.issues = issues;
+	}
 
-    public void setIssues(List<Issue> issues) {
-        this.issues = issues;
-    }
+	public List<Deployment> getDeployments() {
+		return deployments;
+	}
 
-    public List<Deployment> getDeployments() {
-        return deployments;
-    }
+	public void setDeployments(List<Deployment> deployments) {
+		this.deployments = deployments;
+	}
 
-    public void setDeployments(List<Deployment> deployments) {
-        this.deployments = deployments;
-    }
+	public List<ProjectMember> getMembers() {
+		return members;
+	}
 
-    public List<ProjectMember> getMembers() {
-        return members;
-    }
+	public void setMembers(List<ProjectMember> members) {
+		this.members = members;
+	}
 
-    public void setMembers(List<ProjectMember> members) {
-        this.members = members;
-    }
+	@Override
+	public String toString() {
+		return "Project [id=" + id + ", name=" + name + ", description=" + description + ", createdAt=" + createdAt
+				+ ", updatedAt=" + updatedAt + "]";
+	}
+
 }
