@@ -17,7 +17,6 @@ interface HeaderProps {
 }
 
 export function Header({ user }: HeaderProps) {
-
   const router = useRouter();
   async function handleLogout() {
     try {
@@ -42,21 +41,6 @@ export function Header({ user }: HeaderProps) {
       console.error("Logout error", err);
     }
   } // optional if you maintain server-side blacklist
-
-
-  // Mock users for demo switching
-  const mockUsers = [
-    { id: "1", name: "Admin User", email: "admin@company.com", role: "ADMIN" },
-    {
-      id: "2",
-      fullName: "Project Manager",
-      email: "pm@company.com",
-      role: "PROJECT_MANAGER",
-    },
-    { id: "3", fullName: "Developer", email: "dev@company.com", role: "DEVELOPER" },
-    { id: "4", fullName: "Tester", email: "tester@company.com", role: "TESTER" },
-    { id: "5", fullName: "New User", email: "newuser@company.com", role: "NONE" },
-  ];
 
   return (
     <header className="border-b border-border bg-card">
@@ -101,8 +85,6 @@ export function Header({ user }: HeaderProps) {
                   <DropdownMenuSeparator />
                 </>
               )}
-
-
 
               {user && (
                 <>
