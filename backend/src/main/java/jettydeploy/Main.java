@@ -12,6 +12,7 @@ import servlets.SessionValidateServlet;
 import servlets.UserServlet;
 import servlets.LoginServlet;
 import servlets.LogoutServlet;
+import servlets.ProjectServlet;
 
 public class Main {
 	public static void main(String[] args) throws Exception {
@@ -31,6 +32,7 @@ public class Main {
 		context.addServlet(new ServletHolder(new UserServlet()), "/api/users/*");
 		context.addServlet(new ServletHolder(new SessionValidateServlet()), "/api/auth/validate");
 		context.addServlet(new ServletHolder(new LogoutServlet()), "/api/auth/logout");
+		context.addServlet(new ServletHolder(new ProjectServlet()), "/api/projects/*");
 
 		// 4. Start the server
 		try {

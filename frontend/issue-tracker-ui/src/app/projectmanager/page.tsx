@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -37,6 +37,7 @@ import {
 } from "lucide-react";
 import DashboardLayout from "@/components/DashboardLayout";
 import { CreateProjectModal } from "@/components/createProjectModal";
+import { fetchProjects } from "@/lib/api/projects";
 
 interface ProjectManagerDashboardProps {
   user: User;
@@ -46,16 +47,7 @@ export function ProjectManagerDashboard({
   user,
 }: ProjectManagerDashboardProps) {
   // Mock data for demo
-  const [projects, setProjects] = useState<Project[]>([
-    {
-      id: 1,
-      projectname: "E-commerce Platform",
-      description: "Modern e-commerce solution with React and Node.js",
-      createdBy: user,
-      createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-  ]);
+  const [projects, setProjects] = useState<Project[]>();
 
   const [issues] = useState<Issue[]>([
     {
@@ -86,8 +78,21 @@ export function ProjectManagerDashboard({
     },
   ]);
 
+  async function loadProjects() {
+    try {
+      const data = await fetchProjects();
+      setProjects(data);
+    } catch (err: any) {
+      console.log(err.message);
+    }
+  }
+
+  useEffect(() => {
+    loadProjects();
+  }, []);
+
   const getProjectName = (projectId: number) => {
-    const project = projects.find((p) => p.id === projectId);
+    const project = projects?.find((p) => p.id === projectId);
     return project?.projectname || "Unknown Project";
   };
 
@@ -152,7 +157,7 @@ export function ProjectManagerDashboard({
 
   // Calculate stats
   const stats = {
-    totalProjects: projects.length,
+    totalProjects: projects?.length || "0",
     activeIssues: issues.filter((i) => i.status !== "CLOSED").length,
     completedIssues: issues.filter((i) => i.status === "CLOSED").length,
     recentDeployments: deployments
@@ -255,52 +260,56 @@ export function ProjectManagerDashboard({
               />
             </CardHeader>
             <CardContent className="space-y-4">
-              {projects.map((project) => {
-                const progress = getProjectProgress(project.id);
-                const projectIssues = getIssuesByProject(project.id);
+              {projects && projects.length > 0 ? (
+                projects?.map((project) => {
+                  const progress = getProjectProgress(project.id);
+                  const projectIssues = getIssuesByProject(project.id);
 
-                return (
-                  <div
-                    key={project.id}
-                    className="border rounded-lg p-4 space-y-3"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h4 className="font-medium">{project.projectname}</h4>
-                        <p className="text-sm text-muted-foreground">
-                          {project.description}
-                        </p>
-                      </div>
-                      {/* <Badge variant="outline" className="bg-blue-500/10 text-blue-500 border-blue-500/20">
+                  return (
+                    <div
+                      key={project.id}
+                      className="border rounded-lg p-4 space-y-3"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="font-medium">{project.projectname}</h4>
+                          <p className="text-sm text-muted-foreground">
+                            {project.description}
+                          </p>
+                        </div>
+                        {/* <Badge variant="outline" className="bg-blue-500/10 text-blue-500 border-blue-500/20">
                       {project.members.length} members
                     </Badge> */}
-                    </div>
-
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span>Progress</span>
-                        <span>{progress}%</span>
                       </div>
-                      <Progress value={progress} className="h-2" />
-                    </div>
 
-                    <div className="flex items-center justify-between text-sm">
-                      <div className="flex items-center gap-4">
-                        <span className="text-muted-foreground">
-                          {projectIssues.length} issues
-                        </span>
-                        <span className="text-muted-foreground">
-                          Updated{" "}
-                          {new Date(project.updatedAt!).toLocaleDateString()}
-                        </span>
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span>Progress</span>
+                          <span>{progress}%</span>
+                        </div>
+                        <Progress value={progress} className="h-2" />
                       </div>
-                      <Button variant="ghost" size="sm">
-                        View Details
-                      </Button>
+
+                      <div className="flex items-center justify-between text-sm">
+                        <div className="flex items-center gap-4">
+                          <span className="text-muted-foreground">
+                            {projectIssues.length} issues
+                          </span>
+                          <span className="text-muted-foreground">
+                            Updated{" "}
+                            {new Date(project.updatedAt!).toLocaleDateString()}
+                          </span>
+                        </div>
+                        <Button variant="ghost" size="sm">
+                          View Details
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })
+              ) : (
+                <div>No Projects here</div>
+              )}
             </CardContent>
           </Card>
 
