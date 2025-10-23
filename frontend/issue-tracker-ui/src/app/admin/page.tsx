@@ -47,7 +47,6 @@ interface AdminDashboardProps {
 export function AdminDashboard({ user }: AdminDashboardProps) {
   // Mock data for demo
   const [users, setUsers] = useState<User[]>();
-
   const [successMessage, setSuccessMessage] = useState("");
 
   async function loadUsers() {

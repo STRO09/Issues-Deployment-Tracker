@@ -11,6 +11,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { LogOut, Triangle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { User } from "@/types/user";
+import { logoutUser } from "@/lib/api/auth";
 
 interface HeaderProps {
   user: User;
@@ -20,23 +21,8 @@ export function Header({ user }: HeaderProps) {
   const router = useRouter();
   async function handleLogout() {
     try {
-      const res = await fetch(
-        "http://localhost:8080/IssuesandDeploymentTracker/api/auth/logout",
-        {
-          method: "POST",
-          credentials: "include", // send cookies
-        }
-      );
-
-      if (res.ok) {
-        // Optional: clear any client state
-        localStorage.clear();
-        sessionStorage.clear();
-
-        router.push("/auth");
-      } else {
-        console.error("Logout failed");
-      }
+      await logoutUser();
+      router.push("/auth");
     } catch (err) {
       console.error("Logout error", err);
     }
