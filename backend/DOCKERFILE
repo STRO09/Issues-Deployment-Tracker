@@ -12,7 +12,7 @@ RUN mvn -B clean package -DskipTests
 
 
 # ===== Stage 2: Tomcat runtime =====
-FROM openjdk:8-jdk-alpine
+FROM eclipse-temurin:8-jdk-alpine
 
 # Install wget and unzip
 RUN apk add --no-cache wget bash tar
