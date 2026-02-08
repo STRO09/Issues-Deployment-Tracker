@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -30,7 +31,6 @@ import {
   Bug,
   Rocket,
   ExternalLink,
-  Plus,
   CheckCircle,
   AlertCircle,
   Clock,
@@ -43,40 +43,55 @@ interface ProjectManagerDashboardProps {
   user: User;
 }
 
-export function ProjectManagerDashboard({
+export default  function ProjectManagerDashboard({
   user,
 }: ProjectManagerDashboardProps) {
-  // Mock data for demo
+  const router = useRouter();
   const [projects, setProjects] = useState<Project[]>([]);
-
-  const [issues] = useState<Issue[]>([
-    {
-      id: 1,
-      title: "Fix payment gateway integration",
-      description: "Payment processing fails for certain card types",
-      status: Status.IN_PROGRESS,
-      priority: Priority.HIGH,
-      projectId: 1,
-      assignedTo: user,
-      createdBy: user,
-      createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-      updatedAt: new Date().toISOString(),
-      comments: ["Hallelujah"],
-    },
-  ]);
-
-  const [deployments] = useState<Deployment[]>([
-    {
-      id: 1,
-      projectId: 1,
-      version: "v2.1.0",
-      description: "Bug fixes and performance improvements",
-      url: "https://ecommerce-prod.vercel.app",
-      deployedBy: user.id,
-      deployedAt: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
-      status: "SUCCESS",
-    },
-  ]);
+  const [issues, setIssues] = useState<Issue[]>([]);
+  const [deployments, setDeployments] = useState<Deployment[]>([]);
+  
+  useEffect(() => {
+    if (!user) router.push("/auth");
+  }, [user, router]);
+  
+  useEffect(() => {
+    if (user) {
+      setIssues([
+        {
+          id: 1,
+          title: "Fix payment gateway integration",
+          description: "Payment processing fails for certain card types",
+          status: Status.IN_PROGRESS,
+          priority: Priority.HIGH,
+          projectId: 1,
+          assignedTo: user,
+          createdBy: user,
+          createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+          updatedAt: new Date().toISOString(),
+          comments: ["Hallelujah"],
+        },
+      ]);
+      setDeployments([
+        {
+          id: 1,
+          projectId: 1,
+          version: "v2.1.0",
+          description: "Bug fixes and performance improvements",
+          url: "https://ecommerce-prod.vercel.app",
+          deployedBy: user.id,
+          deployedAt: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
+          status: "SUCCESS",
+        },
+      ]);
+    }
+  }, [user]);
+  
+  useEffect(() => {
+    loadProjects();
+  }, []);
+  
+  if (!user) return null;
 
   async function loadProjects() {
     try {
@@ -87,10 +102,6 @@ export function ProjectManagerDashboard({
       console.log(err.message);
     }
   }
-
-  useEffect(() => {
-    loadProjects();
-  }, []);
 
   const getProjectName = (projectId: number) => {
     const project = projects?.find((p) => p.id === projectId);

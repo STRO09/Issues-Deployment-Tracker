@@ -10,7 +10,7 @@ type RegisterPanelProps = {
   setIsLogin: (value: boolean) => void;
 };
 
-export function RegisterForm({ handleSwitch, isLogin , setIsLogin}: RegisterPanelProps) {
+export function RegisterForm({ handleSwitch, setIsLogin}: RegisterPanelProps) {
 
     const [showSocial, setShowSocial] = useState(false);
 

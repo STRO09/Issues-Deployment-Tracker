@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -44,10 +45,20 @@ interface AdminDashboardProps {
   user: User;
 }
 
-export function AdminDashboard({ user }: AdminDashboardProps) {
-  // Mock data for demo
+export default function AdminDashboard({ user }: AdminDashboardProps) {
+  const router = useRouter();
   const [users, setUsers] = useState<User[]>();
   const [successMessage, setSuccessMessage] = useState("");
+  
+  useEffect(() => {
+    if (!user) router.push("/auth");
+  }, [user, router]);
+  
+  useEffect(() => {
+    loadUsers();
+  }, []);
+  
+  if (!user) return null;
 
 async function loadUsers() {
   try {
@@ -104,10 +115,6 @@ async function handleRoleChange(userId: number, newRole: UserRole) {
     activeIssues: 23, // Mock data
     deployments: 15, // Mock data
   };
-
-  useEffect(() => {
-    loadUsers();
-  }, []);
 
   return (
     <DashboardLayout user={user}>

@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
@@ -27,12 +29,14 @@ interface PendingRolePageProps {
   user: User;
 }
 
-export function PendingRolePage({ user }: PendingRolePageProps) {
+export default function PendingRolePage({ user }: PendingRolePageProps) {
   const [requestedRole, setRequestedRole] = useState<Role | "">("");
   const [reason, setReason] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const router = useRouter();
+
+  if (!user) return <p>Loading...</p>;
 
   const availableRoles: { value: Role; label: string; description: string }[] =
     [
