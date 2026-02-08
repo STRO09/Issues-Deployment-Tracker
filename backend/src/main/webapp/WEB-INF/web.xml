@@ -13,6 +13,10 @@
     <display-name>CorsFilter</display-name>
     <filter-name>CorsFilter</filter-name>
     <filter-class>filters.CorsFilter</filter-class>
+    <init-param>
+      <param-name>allowedOrigins</param-name>
+      <param-value>http://localhost:3000,https://issues-deployment-tracker.vercel.app,https://issues-deploymen-git-b10232-sagarjanjoted123-gmailcoms-projects.vercel.app</param-value>
+    </init-param>
   </filter>
   <filter-mapping>
     <filter-name>CorsFilter</filter-name>
