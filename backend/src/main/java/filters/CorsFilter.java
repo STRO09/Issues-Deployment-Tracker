@@ -27,18 +27,27 @@ public class CorsFilter implements Filter {
 
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
 			throws IOException, ServletException {
-		// TODO Auto-generated method stub
-		// place your code here
 		HttpServletResponse response = (HttpServletResponse) resp;
 		HttpServletRequest request = (HttpServletRequest) req;
 		System.out.println("CorsFilter hit for: " + request.getRequestURI());
-//		String origin = req.getHeader("Origin");
-
-//		 response.setHeader("Access-Control-Allow-Origin","https://issues-deployment-tracker.vercel.app");
-		response.setHeader("Access-Control-Allow-Origin","http://localhost:3000");
-		response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT,PATCH, DELETE, OPTIONS");
+		
+		// Dynamic CORS: Allow both development and production origins
+		String origin = request.getHeader("Origin");
+		String[] allowedOrigins = {
+			"http://localhost:3000",
+			"https://issues-deployment-tracker.vercel.app"
+		};
+		
+		for (String allowed : allowedOrigins) {
+			if (allowed.equals(origin)) {
+				response.setHeader("Access-Control-Allow-Origin", origin);
+				break;
+			}
+		}
+		
+		response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
 		response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-		response.setHeader("Access-Control-Allow-Credentials", "true"); // if using cookies/auth
+		response.setHeader("Access-Control-Allow-Credentials", "true");
 		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 		response.setHeader("Pragma", "no-cache");
 		response.setHeader("Expires", "0");
