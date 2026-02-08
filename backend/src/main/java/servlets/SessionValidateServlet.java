@@ -34,15 +34,21 @@ public class SessionValidateServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		ObjectMapper mapper = new ObjectMapper();
-        UserDTO userInfo = new UserDTO();
-        userInfo.setId(Long.parseLong((String) request.getAttribute("id")));
-        userInfo.setFullName((String) request.getAttribute("fullName"));
-        userInfo.setEmail((String) request.getAttribute("email")); // add if available
-        userInfo.setRole((String) request.getAttribute("role"));
+		response.setContentType("application/json");
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+	        UserDTO userInfo = new UserDTO();
+	        userInfo.setId(Long.parseLong((String) request.getAttribute("id")));
+	        userInfo.setFullName((String) request.getAttribute("fullName"));
+	        userInfo.setEmail((String) request.getAttribute("email")); // add if available
+	        userInfo.setRole((String) request.getAttribute("role"));
 
-        response.setContentType("application/json");
-        mapper.writeValue(response.getWriter(), userInfo);
+	        mapper.writeValue(response.getWriter(), userInfo);
+		} catch (Exception e) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.getWriter().write("{\"message\":\"Validation error\"}");
+			e.printStackTrace();
+		}
 	}
 
 	/**

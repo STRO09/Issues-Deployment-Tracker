@@ -53,7 +53,7 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-
+		response.setContentType("application/json");
 		System.out.println("Login Servlet hit for Request Type: "+request.getMethod());
 		try {
 			ObjectMapper mapper = new ObjectMapper();
@@ -64,6 +64,7 @@ public class LoginServlet extends HttpServlet {
 			
 			if (!fetcheduserdata.isPresent()) {
 	            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	            response.setContentType("application/json");
 	            response.getWriter().write("{\"message\":\"Invalid email\"}");
 	            return;
 	        }
@@ -73,6 +74,7 @@ public class LoginServlet extends HttpServlet {
 			
 			if(!BCrypt.checkpw(logindata.getPassword(), fetcheduser.getPassword() )) {
 	            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	            response.setContentType("application/json");
 	            response.getWriter().write("{\"message\":\"Invalid password\"}");
 				return;
 			}
@@ -115,8 +117,7 @@ public class LoginServlet extends HttpServlet {
 		}
 		catch (Exception e) {
 			// TODO: handle exception
-			 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-	            response.getWriter().write("{\"message\":\"Server error\"}");
+			 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);			 response.setContentType("application/json");	            response.getWriter().write("{\"message\":\"Server error\"}");
 	            e.printStackTrace();
 		}
 
