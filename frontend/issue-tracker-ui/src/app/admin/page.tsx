@@ -327,7 +327,7 @@ async function handleRoleChange(userId: number, newRole: UserRole) {
                 <div className="p-1 rounded-full bg-green-500/10">
                   <CheckCircle className="h-3 w-3 text-green-500" />
                 </div>
-                <span>New user "John Doe" registered</span>
+               <span>{'New user "John Doe" registered'}</span>
                 <span className="text-muted-foreground ml-auto">
                   2 hours ago
                 </span>
@@ -336,7 +336,7 @@ async function handleRoleChange(userId: number, newRole: UserRole) {
                 <div className="p-1 rounded-full bg-blue-500/10">
                   <FolderOpen className="h-3 w-3 text-blue-500" />
                 </div>
-                <span>Project "Mobile App" created</span>
+                <span>{'Project "Mobile App" created'}</span>
                 <span className="text-muted-foreground ml-auto">
                   4 hours ago
                 </span>
