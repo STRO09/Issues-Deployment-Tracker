@@ -76,9 +76,11 @@ export function PendingRolePage({ user }: PendingRolePageProps) {
     try {
       await logoutUser();
       router.push("/auth");
-    } catch (err: any) {
-      console.error("Logout error", err);
+    } catch (err:unknown) {
+      if(err instanceof Error) {
+              console.error("Logout error", err);
       alert(err.message || "Logout failed");
+      }
     }
   }
 

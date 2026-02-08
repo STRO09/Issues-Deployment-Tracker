@@ -18,8 +18,8 @@ export default function Home() {
       const data = await validateUser();
       console.log(data);
       setUser(data);
-    } catch (err: any) {
-      console.log(err.message);
+    } catch (err: unknown) {
+      if(err instanceof Error)  console.log(err.message);
       setUser(null);
       router.push("/auth");
     } finally {

@@ -22,7 +22,8 @@ export function LoginForm({ handleSwitch }: LoginPanelProps) {
       alert("Login successful!");
       router.push("/");
       console.log(data);
-    } catch (error: any) {
+    } catch (error: unknown) {
+      if(error instanceof Error)
       alert(error.message || "An error Occured...");
     }
   }

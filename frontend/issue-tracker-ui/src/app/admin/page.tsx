@@ -49,26 +49,36 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
   const [users, setUsers] = useState<User[]>();
   const [successMessage, setSuccessMessage] = useState("");
 
-  async function loadUsers() {
-    try {
-      const data = await fetchUsers();
-      setUsers(data);
-    } catch (err: any) {
+async function loadUsers() {
+  try {
+    const data = await fetchUsers();
+    setUsers(data);
+  } catch (err: unknown) {
+    if (err instanceof Error) {
       console.log(err.message, "Failed to fetch Users");
+    } else {
+      console.log("Failed to fetch Users");
     }
   }
-  async function handleRoleChange(userId: number, newRole: UserRole) {
-    try {
-      const roleToSend = newRole === UserRole.NONE ? null : newRole;
-      await changeRole(userId, newRole);
-      alert("Role changed successfully");
-      setSuccessMessage(`User role updated successfully`);
-      await loadUsers();
-      setTimeout(() => setSuccessMessage(""), 3000);
-    } catch (err: any) {
-      alert(err.message || "An error occured while changing roles...");
+}
+
+async function handleRoleChange(userId: number, newRole: UserRole) {
+  try {
+    const roleToSend = newRole === UserRole.NONE ? null : newRole;
+    await changeRole(userId, newRole);
+    alert("Role changed successfully");
+    setSuccessMessage(`User role updated successfully`);
+    await loadUsers();
+    setTimeout(() => setSuccessMessage(""), 3000);
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      alert(err.message);
+    } else {
+      alert("An error occurred while changing roles...");
     }
   }
+}
+
 
   const getRoleColor = (role: UserRole) => {
     switch (role) {

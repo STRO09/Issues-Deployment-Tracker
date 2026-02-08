@@ -34,7 +34,8 @@ export function RegisterForm({ handleSwitch, isLogin , setIsLogin}: RegisterPane
       alert("Registration successful!");
       setIsLogin(true);
       console.log(data);
-    } catch (err: any) {
+    } catch (err: unknown) {
+      if(err instanceof Error)
       alert(err.message);
     }
   }

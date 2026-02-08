@@ -47,7 +47,7 @@ export function ProjectManagerDashboard({
   user,
 }: ProjectManagerDashboardProps) {
   // Mock data for demo
-  const [projects, setProjects] = useState<Project[]>();
+  const [projects, setProjects] = useState<Project[]>([]);
 
   const [issues] = useState<Issue[]>([
     {
@@ -82,7 +82,8 @@ export function ProjectManagerDashboard({
     try {
       const data = await fetchProjects();
       setProjects(data);
-    } catch (err: any) {
+    } catch (err: unknown) {
+      if(err instanceof Error)
       console.log(err.message);
     }
   }
