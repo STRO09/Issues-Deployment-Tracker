@@ -64,7 +64,6 @@ async function loadUsers() {
 
 async function handleRoleChange(userId: number, newRole: UserRole) {
   try {
-    const roleToSend = newRole === UserRole.NONE ? null : newRole;
     await changeRole(userId, newRole);
     alert("Role changed successfully");
     setSuccessMessage(`User role updated successfully`);
