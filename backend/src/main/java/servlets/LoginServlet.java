@@ -40,6 +40,12 @@ public class LoginServlet extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		System.out.println("LoginServlet initialized");
+	}
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -98,15 +104,20 @@ public class LoginServlet extends HttpServlet {
 	                  .signWith(SignatureAlgorithm.HS256, key)
 	                  .compact();
 			  
-			// create the cookie
-			  javax.servlet.http.Cookie jwtCookie = new javax.servlet.http.Cookie("token", jwt);
-			  jwtCookie.setHttpOnly(true);        // prevents JS access
-			  jwtCookie.setSecure(false);          // true if using HTTPS
-			  jwtCookie.setPath("/");              // send cookie for entire site
-			  jwtCookie.setMaxAge(24 * 60 * 60);  // 1 day in seconds
+							// create the cookie - use explicit Set-Cookie header so we can include SameSite
+							int maxAge = 24 * 60 * 60;
+							StringBuilder cookieBuilder = new StringBuilder();
+							cookieBuilder.append("token=").append(jwt).append(";");
+							cookieBuilder.append(" Path=/;");
+							cookieBuilder.append(" HttpOnly;");
+							// Mark Secure for production (Render serves HTTPS)
+							cookieBuilder.append(" Secure;");
+							// Required for cross-site cookies to be sent
+							cookieBuilder.append(" SameSite=None;");
+							cookieBuilder.append(" Max-Age=").append(maxAge).append(";");
 
-			// add cookie to response
-			  response.addCookie(jwtCookie);
+							// Add Set-Cookie header
+							response.addHeader("Set-Cookie", cookieBuilder.toString());
 			  
 			  response.setStatus(HttpServletResponse.SC_OK);
 			  response.setContentType("application/json");
