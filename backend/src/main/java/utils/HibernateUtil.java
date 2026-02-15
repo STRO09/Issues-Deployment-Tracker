@@ -23,25 +23,26 @@ public class HibernateUtil {
 
 		try {
 			String env = System.getenv("ENVIRONMENT"); // "test" or "prod" or "dev"
-			
-			if(env == null) env = "dev";
+
+			if (env == null)
+				env = "dev";
 			String propsFile;
 			switch (env) {
-			case "test":
-				propsFile = "db-test.properties";
-				break;
-			case "prod":
-				propsFile = "production_db.properties";
-				break;
-			default:
-				propsFile = "db.properties";
+				case "test":
+					propsFile = "db-test.properties";
+					break;
+				case "prod":
+					propsFile = null;
+					break;
+				default:
+					propsFile = "db.properties";
 			}
 
 			Properties properties = new Properties();
 			boolean loaded = false;
 
 			if (propsFile != null) {
-		
+
 				try (InputStream inputStream = HibernateUtil.class.getClassLoader().getResourceAsStream(propsFile)) {
 					if (inputStream == null) {
 						throw new RuntimeException("Unable to find hibernate.properties");
@@ -53,6 +54,29 @@ public class HibernateUtil {
 					e.printStackTrace();
 					throw new RuntimeException("Failed to load db.properties", e);
 				}
+			} else {
+				System.out.println("Using environment variables for DB config");
+
+				properties.setProperty(
+						"hibernate.connection.driver_class",
+						System.getenv("hibernate.connection.driver_class"));
+				properties.setProperty(
+						"hibernate.connection.url",
+						System.getenv("hibernate.connection.url"));
+				properties.setProperty(
+						"hibernate.connection.username",
+						System.getenv("hibernate.connection.username"));
+				properties.setProperty(
+						"hibernate.connection.password",
+						System.getenv("hibernate.connection.password"));
+				properties.setProperty(
+						"hibernate.dialect",
+						System.getenv("hibernate.dialect"));
+
+				properties.setProperty("hibernate.hbm2ddl.auto", "update");
+				properties.setProperty("hibernate.show_sql", "false");
+				properties.setProperty("hibernate.format_sql", "false");
+
 			}
 			if (!loaded) {
 				System.out.println("Falling back to environment variables for DB config...");
