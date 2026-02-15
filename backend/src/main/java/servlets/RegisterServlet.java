@@ -18,7 +18,6 @@ import models.User;
 /**
  * Servlet implementation class RegisterServlet
  */
-@WebServlet("/api/auth/register")
 public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	UserDAO userdao = new UserImplementor();

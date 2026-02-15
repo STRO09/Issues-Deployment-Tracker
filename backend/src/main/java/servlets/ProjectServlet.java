@@ -22,7 +22,7 @@ import models.Project;
 /**
  * Servlet implementation class ProjectServlet
  */
-@WebServlet("/api/projects/*")
+// @WebServlet("/api/projects/*")
 public class ProjectServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

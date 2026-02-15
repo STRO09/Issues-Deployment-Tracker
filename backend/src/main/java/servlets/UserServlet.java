@@ -24,7 +24,6 @@ import models.User.Role;
 /**
  * Servlet implementation class UserServlet
  */
-@WebServlet("/api/users/*")
 public class UserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	UserDAO userdao = new UserImplementor();
