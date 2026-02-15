@@ -23,7 +23,7 @@ public class HibernateUtil {
 
 		try {
 			String env = System.getenv("ENVIRONMENT"); // "test" or "prod" or "dev"
-
+			boolean loaded = false;
 			if (env == null)
 				env = "dev";
 			String propsFile;
@@ -33,13 +33,14 @@ public class HibernateUtil {
 					break;
 				case "prod":
 					propsFile = null;
+					loaded = true;
 					break;
 				default:
 					propsFile = "db.properties";
 			}
 
 			Properties properties = new Properties();
-			boolean loaded = false;
+
 
 			if (propsFile != null) {
 
