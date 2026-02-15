@@ -21,7 +21,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
-@WebFilter("/*")
 public class AuthFilter extends HttpFilter implements Filter {
 
 	public AuthFilter() {
@@ -38,13 +37,18 @@ public class AuthFilter extends HttpFilter implements Filter {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
 
+		if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+			response.setStatus(HttpServletResponse.SC_OK);
+			return;
+		}
+
 		String path = request.getRequestURI();
 		System.out.println("AuthFilter hit for: " + request.getRequestURI());
 		System.out.println(path);
 
 		// whitelist login & register
 		if (path.endsWith("/api/auth/login") || path.endsWith("/api/auth/register")) {
-			chain.doFilter(request, response); 
+			chain.doFilter(request, response);
 			return;
 		}
 

@@ -16,7 +16,6 @@ import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebFilter("/*")
 public class CorsFilter implements Filter {
 
 	private Set<String> allowedOrigins = Collections.emptySet();
