@@ -31,6 +31,9 @@ export function AuthForm() {
   return (
     <div className="flex h-screen w-full items-center justify-center bg-gray-100">
       <div className="relative flex w-[800px] h-[650px] overflow-hidden rounded-2xl shadow-lg bg-white">
+      <div className="marquee text-red-500 font-bold mb-4">
+        <span>backend service is suspended. please contact to see a demo</span>
+      </div>
         {/* Image / Side Panel */}
         <motion.div
           animate={{ x: isLogin ? 0 : "100%" }}
